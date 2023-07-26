@@ -1,4 +1,4 @@
-name: Locust Multi-job Test
+name: Locust Triggers Trial
 on: [push, workflow_dispatch]
 jobs:
   standard:
