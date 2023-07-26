@@ -27,7 +27,7 @@ class MyTest(BaseTaskSet):
                 timeout=10,
                 headers=self.headers,
                 catch_response=True) as response:
-            if response.status_code is 200:
+            if response.status_code == 200:
                 print(f"{response.status_code} GOOD REQUEST")
                 response.success()
             else:
