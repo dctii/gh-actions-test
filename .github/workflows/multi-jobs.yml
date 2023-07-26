@@ -1,0 +1,48 @@
+name: Locust Multi-job Test
+on: workflow_dispatch
+jobs:
+  standard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Announce Docker process
+        run: echo "Running, but without container 🐍"
+
+      - name: Get code
+        uses: actions/checkout@v3
+
+      - name: Set up python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip3 install --upgrade pip setuptools wheel
+          pip3 install -r requirements.txt
+
+      - name: Run locust test
+        run: locust -f ./locustfiles/test.py -u 10 -r 2 --run-time 10 --headless --only-summary
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Announce Docker process
+        run: echo "Running, but in DOCKER 🐳"
+      - name: Get code
+        uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        run: docker build -t my-locust-image -f ./Dockerfile .
+
+      - name: Start Docker Compose
+        run: docker compose -f ./docker-compose.yml up --no-build
+  finished:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Announce ending of process
+        run: echo "ALL DONE! 🛑"
