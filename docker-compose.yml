@@ -1,0 +1,34 @@
+# /docker-compose.yml
+version: '3.8'
+
+services:
+  master:
+    image: my-locust-image
+    ports:
+      - "8089:8089"
+      - "5557:5557"
+    volumes:
+      - ./:/mnt/locust
+    command:
+      - "locust --config /mnt/locust/locustconfs/master.docker.conf"
+
+  worker1:
+    image: my-locust-image
+    volumes:
+      - ./:/mnt/locust
+    command:
+      - "locust --config /mnt/locust/locustconfs/worker.docker.conf"
+
+  worker2:
+    image: my-locust-image
+    volumes:
+      - ./:/mnt/locust
+    command:
+      - "locust --config /mnt/locust/locustconfs/worker.docker.conf"
+
+  worker3:
+    image: my-locust-image
+    volumes:
+      - ./:/mnt/locust
+    command:
+      - "locust --config /mnt/locust/locustconfs/worker.docker.conf"

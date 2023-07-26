@@ -1,0 +1,12 @@
+../.venv
+.venv/*
+logfiles
+data/archived
+data/credential_csv_newtour.csv
+pyproject.toml
+README.md
+__pycache__
+.idea
+
+master.conf
+worker.conf
