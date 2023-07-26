@@ -23,6 +23,7 @@ jobs:
       - name: Run locust test
         run: locust -f ./locustfiles/test.py -u 10 -r 2 --run-time 10 --headless --only-summary
   docker:
+    needs: standard
     runs-on: ubuntu-latest
     steps:
       - name: Announce Docker process
@@ -42,6 +43,7 @@ jobs:
       - name: Start Docker Compose
         run: docker compose -f ./docker-compose.yml up --no-build
   finished:
+    needs: docker
     runs-on: ubuntu-latest
     steps:
       - name: Announce ending of process
