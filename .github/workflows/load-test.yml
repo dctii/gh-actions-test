@@ -1,0 +1,18 @@
+name: Locust Test Action
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3 # https://github.com/marketplace/actions/checkout
+      - name: Set up python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: setup.py
+      - name: Install dependencies
+        run: pip3 install -r requirements.txt
+      - name: Run locust test
+        run: locust -f ./locustfiles/test.py -u 10 -r 2 --headless --only-summary
