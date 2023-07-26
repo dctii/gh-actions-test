@@ -1,14 +1,16 @@
-name: Locust Expressions Context Test
-on: [workflow_dispatch] # can add more than one event trigger
+name: Locust Triggers Trial
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 18 * * *' # this will run at 10:30 AM Pacific Standard Time
 jobs:
-  info:
+  time-teller:
     runs-on: ubuntu-latest
     steps:
-      - name: Output GitHub Context
-        run: echo "${{ toJSON(github) }}"
-
+      - name: Announce time
+        run: echo "Current time in PST is $(TZ='America/Los_Angeles' date)"
   standard:
-    needs: info
+    needs: time-teller
     runs-on: ubuntu-latest
     steps:
       - name: Announce process
@@ -29,7 +31,6 @@ jobs:
 
       - name: Run locust test
         run: locust -f ./locustfiles/test.py -u 10 -r 2 --run-time 10 --headless --only-summary
-
   finished:
     needs: standard
     runs-on: ubuntu-latest
