@@ -1,5 +1,6 @@
 name: Locust Schedule Trigger Test
 on:
+  workflow_dispatch:
   schedule:
     - cron: '37 17 * * *' # this will run at 10:30 AM Pacific Standard Time
 jobs:
