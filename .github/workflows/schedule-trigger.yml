@@ -1,8 +1,7 @@
 name: Locust Schedule Trigger Test
 on:
-  workflow_dispatch:
   schedule:
-    - cron: '30 18 * * *' # this will run at 10:30 AM Pacific Standard Time
+    - cron: '37 17 * * *' # this will run at 10:30 AM Pacific Standard Time
 jobs:
   time-teller:
     runs-on: ubuntu-latest
@@ -37,3 +36,9 @@ jobs:
     steps:
       - name: Announce ending of process
         run: echo "ALL DONE! 🛑"
+
+
+
+# cron: 'MIN HOUR DOTM MONTH DOTW'
+# eg, "30 19 30 7 7" means  "the 30th minute of the hour of 7 PM on the 30th day of July on a Sunday"
+# use '*' to omit specificity for that column. If all '*' for each column, it means the task should run every minute of every hour of every day of the month, every month, and every day of the week
