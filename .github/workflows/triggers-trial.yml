@@ -1,0 +1,30 @@
+name: Locust Multi-job Test
+on: [push, workflow_dispatch]
+jobs:
+  standard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Announce process
+        run: echo "Running, but without container 🐍"
+
+      - name: Get code
+        uses: actions/checkout@v3
+
+      - name: Set up python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip3 install --upgrade pip setuptools wheel
+          pip3 install -r requirements.txt
+
+      - name: Run locust test
+        run: locust -f ./locustfiles/test.py -u 10 -r 2 --run-time 10 --headless --only-summary
+  finished:
+    needs: standard
+    runs-on: ubuntu-latest
+    steps:
+      - name: Announce ending of process
+        run: echo "ALL DONE! 🛑"
