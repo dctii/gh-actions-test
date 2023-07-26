@@ -1,7 +1,14 @@
-name: Locust Triggers Trial
-on: [push, workflow_dispatch] # can add more than one event trigger
+name: Locust Expressions Context Test
+on: [workflow_dispatch] # can add more than one event trigger
 jobs:
+  info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output GitHub Context
+        run: echo "${{ toJSON(github) }}"
+
   standard:
+    needs: info
     runs-on: ubuntu-latest
     steps:
       - name: Announce process
