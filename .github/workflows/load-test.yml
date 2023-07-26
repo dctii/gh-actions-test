@@ -7,16 +7,6 @@ jobs:
       - name: Get code
         uses: actions/checkout@v3 # https://github.com/marketplace/actions/checkout
 
-      - name: Set up python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: |
-          pip3 install --upgrade pip setuptools wheel
-          pip3 install -r requirements.txt
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
@@ -28,6 +18,18 @@ jobs:
 
       - name: Start Docker Compose
         run: docker compose -f ./docker-compose.yml up --no-build
+
+# WITHOUT DOCKER
+
+#      - name: Set up python
+#        uses: actions/setup-python@v4
+#        with:
+#          python-version: '3.11'
+#
+#      - name: Install dependencies
+#        run: |
+#          pip3 install --upgrade pip setuptools wheel
+#          pip3 install -r requirements.txt
 
 #      - name: Run locust test
 #        run: locust -f ./locustfiles/test.py -u 10 -r 2 --run-time 10 --headless --only-summary
