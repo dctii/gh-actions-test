@@ -1,7 +1,7 @@
 FROM python:3.11
 
-COPY .. /mnt/locust
-COPY ../requirements.txt /mnt/locust
+COPY . /mnt/locust
+#COPY ../requirements.txt /mnt/locust
 
 WORKDIR /mnt/locust
 
