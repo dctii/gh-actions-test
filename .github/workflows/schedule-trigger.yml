@@ -1,8 +1,7 @@
 name: Locust Schedule Trigger Test
 on:
   schedule:
-    - cron: '0 18 * * *'
-    - cron: '1 18 * * *'
+    - cron: '25 18 * * *'
 jobs:
   time-teller:
     runs-on: ubuntu-latest
