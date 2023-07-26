@@ -1,5 +1,5 @@
 name: Locust Triggers Trial
-on: [push, workflow_dispatch] # can add more than one event trigger
+on: [workflow_dispatch] # can add more than one event trigger
 jobs:
   standard:
     runs-on: ubuntu-latest
