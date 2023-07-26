@@ -11,6 +11,8 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install dependencies
-        run: pip3 install -r requirements.txt
+        run: |
+          pip3 install --upgrade pip setuptools wheel
+          pip3 install -r requirements.txt
       - name: Run locust test
         run: locust -f ./locustfiles/test.py -u 10 -r 2 --headless --only-summary
