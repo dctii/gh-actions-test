@@ -19,6 +19,7 @@ jobs:
           to: ${{ env.EMAIL_TO }}
           from: ${{ env.EMAIL_FROM }}
           body: ${{ env.EMAIL_BODY }}
+          attachments: ${{ env.EMAIL_ATTACHMENTS }}
           ignore_cert: true
           priority: normal
         env:
@@ -26,4 +27,4 @@ jobs:
           EMAIL_FROM: "Dana Tolman"
           EMAIL_BODY: "Build job of ${{github.repository}} initiated."
           EMAIL_TO: "danatolman@icloud.com"
-          EMAIL_ATTACHMENTS: "./requirements.txt"
+          EMAIL_ATTACHMENTS: "./attachment.txt,./requirements.txt"
