@@ -1,4 +1,4 @@
-name: Locust Test Action
+name: DOCKER - Locust Test Action
 on: workflow_dispatch
 jobs:
   test:
