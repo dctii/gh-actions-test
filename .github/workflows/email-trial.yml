@@ -27,4 +27,4 @@ jobs:
           EMAIL_FROM: "Dana Tolman"
           EMAIL_BODY: "Build job of ${{github.repository}} initiated."
           EMAIL_TO: "danatolman@icloud.com"
-          EMAIL_ATTACHMENTS: ./attachment.txt,./requirements.txt
+          EMAIL_ATTACHMENTS: ./attachment.txt,./requirements.txt,./images/*.png
