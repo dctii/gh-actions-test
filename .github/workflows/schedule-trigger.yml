@@ -1,7 +1,8 @@
-name: Locust Schedule Trigger Test
+name: Locust Schedule Trigger Test (Disabled Schedule)
 on:
-  schedule:
-    - cron: '25 18 * * *'
+  workflow_dispatch:
+#  schedule:
+#    - cron: '25 18 * * *'
 jobs:
   time-teller:
     runs-on: ubuntu-latest
