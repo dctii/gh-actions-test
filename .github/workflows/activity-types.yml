@@ -1,0 +1,20 @@
+name: Activity Types Tests
+on:
+  pull_request:
+    types:
+      - opened
+  workflow_dispatch:
+jobs:
+  print-text:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print greeting
+        run: |
+          echo "Hello World!"
+          echo "Hello again, World!"
+      - name: Print goodbye
+        run: |
+          echo "Done - bye!"
+          echo "Woops, forgot something. Ok, bye now!"
+
+# default activity types for pull_request == 'opened', 'synchronize' or 'reopened'
