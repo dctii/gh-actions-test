@@ -31,4 +31,10 @@ jobs:
         run: |
           echo "This is printing because a pull request comment was made."
 
+      - name: "Print Issue object"
+        run: echo "${{ github.event.issue }}"
+
+      - name: "Print Issue object's PR"
+        run: echo "${{ github.event.issue.pull_request }}"
+
 # default activity types for pull_request == 'opened', 'synchronize' or 'reopened'
