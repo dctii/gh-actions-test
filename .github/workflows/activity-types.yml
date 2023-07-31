@@ -16,27 +16,11 @@ on:
     types:
       - opened
       - closed
-    branches:
-      - main
-      # Wildcard notations available
-      - 'dev-*'
-      - 'feat/**'
-    branches-ignore:
-      - 'ignore-**'
-      - 'ignore/**'
   issue_comment:
     types:
       - created # when an issue comment is created, updated, deleted -- this applies to pull request comments too
       - edited
       - deleted
-    branches:
-      - main
-      # Wildcard notations available
-      - 'dev-*'
-      - 'feat/**'
-    branches-ignore:
-      - 'ignore-**'
-      - 'ignore/**'
   workflow_dispatch:
 jobs:
   print-text:
