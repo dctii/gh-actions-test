@@ -1,5 +1,11 @@
 name: Activity Types Tests
 on:
+  push:
+    branches:
+      - main
+      # Wildcard notations available
+      - 'dev-*'
+      - 'feat/**'
   pull_request:
     types:
       - opened
@@ -22,6 +28,9 @@ jobs:
         run: |
           echo "Done - bye!"
           echo "Woops, forgot something. Ok, bye now!"
+
+      - name: "Print Issue object"
+        run: echo "${{ toJson(github.event.issue) }}"
 
   print-conditional-text:
     runs-on: ubuntu-latest
