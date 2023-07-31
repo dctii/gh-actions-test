@@ -7,8 +7,8 @@ on:
       # Wildcard notations available
       - 'dev-*'
       - 'feat/**'
-#    paths-ignore:
-#      - '.github/workflows/*' # if no file changed in the github folder, then don't do anything
+    paths:
+      - '.github/workflows/*' # if no file changed in the github folder, then don't do anything
   pull_request:
     types:
       - opened
