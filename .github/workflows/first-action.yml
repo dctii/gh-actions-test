@@ -12,3 +12,7 @@ jobs:
         run: |
           echo "Done - bye!"
           echo "Woops, forgot something. Ok, bye now!"
+
+      - name: Print GUI-set environment var
+        run: |
+          echo "${{ env.MY_NEW_VAR }}"
