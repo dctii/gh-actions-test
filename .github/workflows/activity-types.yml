@@ -1,20 +1,42 @@
 name: Activity Types Tests
 on:
+  # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
   push:
     branches:
       - main
       # Wildcard notations available
       - 'dev-*'
       - 'feat/**'
+    branches-ignore:
+      - 'ignore-**'
+      - 'ignore/**'
+    paths-ignore:
+      - '.github/workflows/*' # if no file changed in the github folder, then don't do anything
   pull_request:
     types:
       - opened
       - closed
+    branches:
+      - main
+      # Wildcard notations available
+      - 'dev-*'
+      - 'feat/**'
+    branches-ignore:
+      - 'ignore-**'
+      - 'ignore/**'
   issue_comment:
     types:
-      - created
+      - created # when an issue comment is created, updated, deleted -- this applies to pull request comments too
       - edited
       - deleted
+    branches:
+      - main
+      # Wildcard notations available
+      - 'dev-*'
+      - 'feat/**'
+    branches-ignore:
+      - 'ignore-**'
+      - 'ignore/**'
   workflow_dispatch:
 jobs:
   print-text:
