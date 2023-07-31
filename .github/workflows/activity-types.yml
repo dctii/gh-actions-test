@@ -3,6 +3,12 @@ on:
   pull_request:
     types:
       - opened
+      - closed
+  issue_comment:
+    types:
+      - created
+      - edited
+      - deleted
   workflow_dispatch:
 jobs:
   print-text:
@@ -16,5 +22,13 @@ jobs:
         run: |
           echo "Done - bye!"
           echo "Woops, forgot something. Ok, bye now!"
+
+  print-conditional-text:
+    runs-on: ubuntu-latest
+    if: ${{github.event.issue.pull_request}}
+    steps:
+      - name: "Conditional Printer: Pull Request Comment"
+        run: |
+          echo "This is printing because a pull request comment was made."
 
 # default activity types for pull_request == 'opened', 'synchronize' or 'reopened'
