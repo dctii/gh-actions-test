@@ -15,4 +15,4 @@ jobs:
 
       - name: Print GUI-set environment var
         run: |
-          echo "${{ env.MY_NEW_VAR }}"
+          echo "${{ vars.MY_NEW_VAR }}"
