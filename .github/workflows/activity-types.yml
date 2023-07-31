@@ -1,5 +1,6 @@
 name: Activity Types Tests
 on:
+  push:
   pull_request:
     types:
       - opened
