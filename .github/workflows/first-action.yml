@@ -1,5 +1,12 @@
 name: First Workflow
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths: # if activity in this folder or file, permitted. paths-ignore is the opposite
+      - '.github/workflows/activity-types.yml'
+
 jobs:
   first-job:
     environment: MY_NEW_ENV
