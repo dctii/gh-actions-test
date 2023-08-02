@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths: # if activity in this folder or file, permitted. paths-ignore is the opposite
-      - '.github/workflows/activity-types.yml'
+      - '.github/workflows/first-action.yml'
 
 jobs:
   first-job:
