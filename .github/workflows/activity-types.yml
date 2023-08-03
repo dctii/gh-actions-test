@@ -7,8 +7,8 @@ on:
       # Wildcard notations available
       - 'dev-*'
       - 'feat/**'
-    paths: # if activity in this folder, permitted. paths-ignore is the opposite
-      - '.github/workflows/*'
+    paths: # if activity in this folder or file, permitted. paths-ignore is the opposite
+      - '.github/workflows/activity-types.yml'
   pull_request:
     types:
       - opened
