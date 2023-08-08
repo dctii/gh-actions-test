@@ -128,7 +128,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get artifacts
-        if: ${{ needs.test.outputs.UPLOAD_ARTIFACTS }} == 'true'
+        if: needs.test.outputs.UPLOAD_ARTIFACTS == 'true'
         uses: actions/download-artifact@v3
         with:
           name: locust-output-files
@@ -137,3 +137,4 @@ jobs:
         run: |
           echo "${{ needs.test.outputs.script-file }}"
           echo "${{ needs.test.outputs.png-file }}"
+          echo "${{ needs.test.outputs.UPLOAD_ARTIFACTS }}"
