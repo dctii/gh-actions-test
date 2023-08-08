@@ -29,7 +29,7 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
 
-      # Install pip3 dependencies
+      # Install python dependencies
       - name: Install dependencies
         run: |
           pip install --upgrade pip setuptools wheel
