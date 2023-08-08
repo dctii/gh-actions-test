@@ -101,6 +101,7 @@ jobs:
 
     # Upload artifacts
       - name: Upload artifacts
+        id: upload_step
         if: env.UPLOAD_ARTIFACTS == 'true'
         uses: actions/upload-artifact@v3
         with:
@@ -120,15 +121,14 @@ jobs:
           echo "png-file=$PNG_FILE" >> "$GITHUB_OUTPUT"
           echo "UPLOAD_ARTIFACTS=$UPLOAD_ARTIFACTS" >> "$GITHUB_OUTPUT"
 
-          
-
 
   deploy:
     needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Get artifacts
-        if: needs.test.outputs.UPLOAD_ARTIFACTS == 'true'
+#        if: needs.test.outputs.UPLOAD_ARTIFACTS == 'true'
+        if: needs.test.steps.upload_step.outcome == 'success'
         uses: actions/download-artifact@v3
         with:
           name: locust-output-files
@@ -138,3 +138,4 @@ jobs:
           echo "${{ needs.test.outputs.script-file }}"
           echo "${{ needs.test.outputs.png-file }}"
           echo "${{ needs.test.outputs.UPLOAD_ARTIFACTS }}"
+          echo "${{ needs.test.steps.upload_step.outcome }}"
