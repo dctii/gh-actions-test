@@ -110,8 +110,8 @@ jobs:
       - name: Publish filenames
         id: publish
         run: |
-          find locustfiles/*.py -type f -execdir echo 'script-file{}' >> $GITHUB_OUTPUT ';'
-          find images/*.png -type f -execdir echo 'png-file{}' >> $GITHUB_OUTPUT ';'
+          find locustfiles/*.py -type f -execdir echo 'script-file {}' >> $GITHUB_OUTPUT ';'
+          find images/*.png -type f -execdir echo 'png-file {}' >> $GITHUB_OUTPUT ';'
           
 
   # TODO: Look at job outputs video and play around with $GITHUB_OUTPUT
