@@ -37,6 +37,7 @@ jobs:
           mkdir -p $LOG_DIR
           mkdir -p $HTML_DIR
           mkdir -p $CSV_DIR
+          mkdir -p $JSON_DIR
           
           locust \
             -f locustfiles/test.py \
