@@ -56,10 +56,27 @@ jobs:
 
       - name: Check if new files have been produced
         run: |
+          echo "\n🌲 This is the root directory:"
           ls
+          echo "\n📁 These are the logfiles:"
           ls ./logfiles
+          echo "\n📁 These are the htmlfiles:"
           ls ./htmlfiles
-          ls ./logfiles
+          echo "\n📁 These are the csvfiles:"
+          ls ./csvfiles
+          echo "\n📁 These are the logfiles:"
+          ls ./jsonfiles
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: locust-output-files
+          path: |
+            ./logfiles/
+            ./htmlfiles/
+            ./csvfiles/
+            ./jsonfiles/
+          
 
   # TODO: Look at job outputs video and play around with $GITHUB_OUTPUT
 #  deploy:
