@@ -59,18 +59,23 @@ jobs:
 
       - name: Clean JSON data
         run: |
+          BLUE="\033[34m"
+          RESET="\033[0m"
+          
           if ! jq '.' $JSON_PATH/$(echo $CURR_TIME).json 2>/dev/null; then
-            echo "Invalid JSON detected!"
+            echo -e "${BLUE}Invalid JSON detected!${RESET}"
             sed -i '$d' $JSON_PATH/$(echo $CURR_TIME).json
-            if ! jq '.' $JSON_PATH/$(echo $CURR_TIME).json 2>/dev/null; then
-              echo "JSON still invalid!"
+            if ! echo -e "${BLUE}$(jq '.' $JSON_PATH/$(echo $CURR_TIME).json)${RESET}" 2>/dev/null; then
+              echo -e "${BLUE}JSON still invalid!${RESET}"
               exit 1
             else
-              echo "JSON is valid."
+              echo -e "${BLUE}JSON is valid.${RESET}"
             fi
           else
-            "JSON is valid."
+            echo -e "${BLUE}JSON is valid.${RESET}"
           fi
+          
+          unset BLUE RESET
         continue-on-error: true
 
       - name: Check if new files have been produced
