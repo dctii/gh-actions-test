@@ -62,7 +62,6 @@ jobs:
           if ! jq '.' $JSON_PATH/$(echo $CURR_TIME).json 2>/dev/null; then
             echo "Invalid JSON detected!"
             sed -i '$d' $JSON_PATH/$(echo $CURR_TIME).json
-            sed -i '$d' $JSON_PATH/$(echo $CURR_TIME).json
             if ! jq '.' $JSON_PATH/$(echo $CURR_TIME).json 2>/dev/null; then
               echo "JSON still invalid!"
               exit 1
