@@ -18,20 +18,29 @@ jobs:
     env:
       UPLOAD_ARTIFACTS: false
     steps:
+      # Get code from repo
       - name: Get code
         uses: actions/checkout@v3
 
+      # Set up python
       - name: Set up python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-
-      - name: Install dependencies
+          cache: 'pip'
         run: |
-          pip3 install --upgrade pip setuptools wheel
-          pip3 install -r requirements.txt
+            pip install --upgrade pip setuptools wheel
+            pip install -r requirements.txt
 
-    # TODO: Need to add some flags that will generate csv files, html files, and log files. These will be uploaded as artifacts.
+
+
+#      # Install pip3 dependencies
+#      - name: Install dependencies
+#        run: |
+#          pip3 install --upgrade pip setuptools wheel
+#          pip3 install -r requirements.txt
+
+      # Run locust test and output results
       - name: Run locust test
         run: |
           CURR_TIME=$(date +%Y-%m-%d_%Hh-%Mm-%Ss)
@@ -112,6 +121,8 @@ jobs:
             ./csvfiles/
             ./jsonfiles/
 
+
+      # Publish outputs
       - name: Publish outputs
         id: publish
         run: |
@@ -126,13 +137,14 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
+      - # Download artifacts
       - name: Get artifacts
-#        if: needs.test.outputs.UPLOAD_ARTIFACTS == 'true'
         if: needs.test.steps.upload_step.outcome == 'success'
         uses: actions/download-artifact@v3
         with:
           name: locust-output-files
 
+      # Echo outputs from 'test' job
       - name: Output filename
         run: |
           echo "${{ needs.test.outputs.script-file }}"
