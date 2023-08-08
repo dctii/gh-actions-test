@@ -81,6 +81,16 @@ jobs:
           echo "📁 These are the jsonfiles:"
           ls ./jsonfiles
 
+      # Cache output files
+      - name: Cache logfiles
+        id: logfiles-cache
+        uses: actions/cache@v3
+        with:
+          path: ./logfiles/
+          # will create a hash of the file, diff key matches mean that changes had occurred to the file
+          # can use this cache in different jobs and workflow cycles
+          key: deps-node-modules-${{ hashFiles('**/*.log') }}
+
       # Clean JSON Data
       - name: Clean JSON data
         run: |
@@ -138,6 +148,16 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: locust-output-files
+
+      # Cache output files
+      - name: Cache logfiles
+        id: logfiles-cache
+        uses: actions/cache@v3
+        with:
+          path: ./logfiles/
+          # will create a hash of the file, diff key matches mean that changes had occurred to the file
+          # can use this cache in different jobs and workflow cycles
+          key: deps-node-modules-${{ hashFiles('**/*.log') }}
 
       # Echo outputs from 'test' job
       - name: Output filename
