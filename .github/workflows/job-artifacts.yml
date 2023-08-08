@@ -11,6 +11,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    outputs: # add identifiers by which you can access the output value
+      script-file: ${{ steps.publish.outputs.script-file }}
+      png-file: ${{ steps.publish.outputs.png-file }}
     steps:
       - name: Get code
         uses: actions/checkout@v3
@@ -57,6 +60,21 @@ jobs:
           
           unset CURR_TIME LOG_DIR HTML_DIR CSV_DIR
 
+      # List files
+      - name: Check if new files have been produced
+        run: |
+          echo "🌲 This is the root directory:"
+          ls
+          echo "📁 These are the logfiles:"
+          ls ./logfiles
+          echo "📁 These are the htmlfiles:"
+          ls ./htmlfiles
+          echo "📁 These are the csvfiles:"
+          ls ./csvfiles
+          echo "📁 These are the jsonfiles:"
+          ls ./jsonfiles
+
+      # Clean JSON Data
       - name: Clean JSON data
         run: |
           BLUE="\033[34m"
@@ -78,19 +96,7 @@ jobs:
           unset BLUE RESET
         continue-on-error: true
 
-      - name: Check if new files have been produced
-        run: |
-          echo "🌲 This is the root directory:"
-          ls
-          echo "📁 These are the logfiles:"
-          ls ./logfiles
-          echo "📁 These are the htmlfiles:"
-          ls ./htmlfiles
-          echo "📁 These are the csvfiles:"
-          ls ./csvfiles
-          echo "📁 These are the jsonfiles:"
-          ls ./jsonfiles
-
+    # Upload artifacts
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -100,12 +106,25 @@ jobs:
             ./htmlfiles/
             ./csvfiles/
             ./jsonfiles/
+
+      - name: Publish filenames
+        id: publish
+        run: |
+          find locustfiles/*.py -type f -execdir echo 'script-file{}' >> $GITHUB_OUTPUT ';'
+          find images/*.png -type f -execdir echo 'png-file{}' >> $GITHUB_OUTPUT ';'
           
 
   # TODO: Look at job outputs video and play around with $GITHUB_OUTPUT
-#  deploy:
-#    runs-on: ubuntu-latest
-#    outputs:
-#      # https://www.udemy.com/course/github-actions-the-complete-guide/learn/lecture/34139954
-#      # https://www.udemy.com/course/github-actions-the-complete-guide/learn/lecture/34139960
-#      output-file: <put something here>
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: locust-output-files
+
+      - name: Output filename
+        run: |
+          echo "${{ needs.test.outputs.script-file }}"
+          echo "${{ needs.test.outputs.png-file }}"
