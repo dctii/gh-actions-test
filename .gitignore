@@ -153,3 +153,8 @@ cython_debug/
 
 # Other
 .NOTES
+
+# Locust
+csvfiles/
+htmlfiles/
+logfiles/

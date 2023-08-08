@@ -1,0 +1,68 @@
+name: Job Artifacts and Outputs Test
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths: # if activity in this folder or file, permitted. paths-ignore is the opposite
+      - '.github/workflows/job-artifacts.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+
+      - name: Set up python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip3 install --upgrade pip setuptools wheel
+          pip3 install -r requirements.txt
+
+    # TODO: Need to add some flags that will generate csv files, html files, and log files. These will be uploaded as artifacts.
+      - name: Run locust test
+        run: |
+          CURR_TIME=$(date +%Y-%m-%d_%Hh-%Mm-%Ss)
+          LOG_DIR="./logfiles"
+          HTML_DIR="./htmlfiles"
+          CSV_DIR="./csvfiles/$CURR_TIME"
+          
+          mkdir -p $LOG_DIR
+          mkdir -p $HTML_DIR
+          mkdir -p $CSV_DIR
+          
+          locust \
+            -f locustfiles/test.py \
+            --users 25 \
+            --spawn-rate 5 \
+            --run-time 5s \
+            --headless \
+            --logfile $LOG_DIR/$(echo $CURR_TIME)_mylog.log --loglevel INFO \
+            --html $HTML_DIR/$(echo $CURR_TIME)_myhtml.html \
+            --csv $CSV_DIR/$(echo $CURR_TIME) --csv-full-history \
+            --json \
+            --exit-code-on-error 1 \
+            --only-summary
+          
+          unset CURR_TIME LOG_DIR HTML_DIR CSV_DIR
+
+      - name: Check if new files have been produced
+        run: |
+          ls
+          ls ./logfiles
+          ls ./htmlfiles
+          ls ./logfiles
+
+  # TODO: Look at job outputs video and play around with $GITHUB_OUTPUT
+#  deploy:
+#    runs-on: ubuntu-latest
+#    outputs:
+#      # https://www.udemy.com/course/github-actions-the-complete-guide/learn/lecture/34139954
+#      # https://www.udemy.com/course/github-actions-the-complete-guide/learn/lecture/34139960
+#      output-file: <put something here>
