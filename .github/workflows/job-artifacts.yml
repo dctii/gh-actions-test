@@ -25,6 +25,9 @@ jobs:
           pip3 install --upgrade pip setuptools wheel
           pip3 install -r requirements.txt
 
+      - name: Install jq
+        run: sudo apt-get install jq
+
     # TODO: Need to add some flags that will generate csv files, html files, and log files. These will be uploaded as artifacts.
       - name: Run locust test
         run: |
@@ -52,19 +55,21 @@ jobs:
             --exit-code-on-error 1 \
             --only-summary | awk '/\[/{flag=1} flag; /\]/{flag=0; print}' > $JSON_DIR/$(echo $CURR_TIME).json
           
-          unset CURR_TIME LOG_DIR HTML_DIR CSV_DIR
+          jq '.' $JSON_DIR/$(echo $CURR_TIME).json > $JSON_DIR/$(echo $CURR_TIME)_corrected.json
+          
+          unset CURR_TIME LOG_DIR HTML_DIR CSV_DIR JSON_DIR
 
       - name: Check if new files have been produced
         run: |
-          echo "\n🌲 This is the root directory:"
+          echo "🌲 This is the root directory:"
           ls
-          echo "\n📁 These are the logfiles:"
+          echo "📁 These are the logfiles:"
           ls ./logfiles
-          echo "\n📁 These are the htmlfiles:"
+          echo "📁 These are the htmlfiles:"
           ls ./htmlfiles
-          echo "\n📁 These are the csvfiles:"
+          echo "📁 These are the csvfiles:"
           ls ./csvfiles
-          echo "\n📁 These are the logfiles:"
+          echo "📁 These are the jsonfiles:"
           ls ./jsonfiles
 
       - name: Upload artifacts
