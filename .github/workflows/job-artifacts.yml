@@ -159,6 +159,9 @@ jobs:
           # can use this cache in different jobs and workflow cycles
           key: deps-node-modules-${{ hashFiles('**/*.log') }}
 
+      - name: List logs
+        run: ls ./logfiles
+
       # Echo outputs from 'test' job
       - name: Output filename
         run: |
