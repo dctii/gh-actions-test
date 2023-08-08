@@ -40,6 +40,7 @@ jobs:
           mkdir -p $JSON_DIR
           
           echo "JSON_PATH=./jsonfiles/$CURR_TIME" >> $GITHUB_ENV
+          echo "CURR_TIME=$CURR_TIME" >> $GITHUB_ENV
           
           locust \
             -f locustfiles/test.py \
@@ -71,7 +72,6 @@ jobs:
           else
             "JSON is valid."
           fi
-
         continue-on-error: true
 
       - name: Check if new files have been produced
