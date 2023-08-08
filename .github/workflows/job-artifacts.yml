@@ -61,7 +61,7 @@ jobs:
         run: |
           BLUE="\033[34m"
           RESET="\033[0m"
-          echo "${BLUE}"
+          
           if ! jq '.' $JSON_PATH/$(echo $CURR_TIME).json 2>/dev/null; then
             echo -e "${BLUE}Invalid JSON detected!${RESET}"
             sed -i '$d' $JSON_PATH/$(echo $CURR_TIME).json
