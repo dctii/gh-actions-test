@@ -1,5 +1,5 @@
 name: Job Artifacts and Outputs Test
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+run-name: ${{ github.actor }} is testing out GitHub Actions with artifacts 🚀
 on:
   workflow_dispatch:
   push:
@@ -32,6 +32,7 @@ jobs:
           LOG_DIR="./logfiles"
           HTML_DIR="./htmlfiles"
           CSV_DIR="./csvfiles/$CURR_TIME"
+          JSON_DIR="./jsonfiles/$CURR_TIME"
           
           mkdir -p $LOG_DIR
           mkdir -p $HTML_DIR
@@ -48,7 +49,7 @@ jobs:
             --csv $CSV_DIR/$(echo $CURR_TIME) --csv-full-history \
             --json \
             --exit-code-on-error 1 \
-            --only-summary
+            --only-summary | awk '/\[/{flag=1} flag; /\]/{flag=0; print}' > $JSON_DIR/$(echo $CURR_TIME).json
           
           unset CURR_TIME LOG_DIR HTML_DIR CSV_DIR
 
