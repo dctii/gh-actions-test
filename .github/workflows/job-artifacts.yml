@@ -132,7 +132,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - # Download artifacts
+      # Download artifacts
       - name: Get artifacts
         if: needs.test.steps.upload_step.outcome == 'success'
         uses: actions/download-artifact@v3
