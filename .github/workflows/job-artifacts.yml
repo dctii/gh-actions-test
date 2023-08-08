@@ -28,17 +28,12 @@ jobs:
         with:
           python-version: '3.11'
           cache: 'pip'
+
+      # Install pip3 dependencies
+      - name: Install dependencies
         run: |
-            pip install --upgrade pip setuptools wheel
-            pip install -r requirements.txt
-
-
-
-#      # Install pip3 dependencies
-#      - name: Install dependencies
-#        run: |
-#          pip3 install --upgrade pip setuptools wheel
-#          pip3 install -r requirements.txt
+          pip install --upgrade pip setuptools wheel
+          pip install -r requirements.txt
 
       # Run locust test and output results
       - name: Run locust test
