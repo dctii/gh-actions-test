@@ -6,11 +6,12 @@ on:
     branches:
       - main
     paths: # if activity in this folder or file, permitted. paths-ignore is the opposite
-      - '.github/workflows/job-artifacts.yml'
+      - '.github/workflows/job-artifacts-cache.yml'
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+#    runs-on: ubuntu-latest
+    runs-on: self-hosted
     outputs: # add identifiers by which you can access the output value
       script-file: ${{ steps.publish.outputs.script-file }}
       png-file: ${{ steps.publish.outputs.png-file }}
@@ -140,7 +141,8 @@ jobs:
 
   deploy:
     needs: test
-    runs-on: ubuntu-latest
+#    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       # Download artifacts
       - name: Get artifacts
