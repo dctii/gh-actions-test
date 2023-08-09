@@ -39,12 +39,15 @@ jobs:
       # Install python dependencies
       - name: Install dependencies
         run: |
+          python3 -m venv .venv
+          source .venv/bin/activate
           pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
 
       # Run locust test and output results
       - name: Run locust test
         run: |
+          source .venv/bin/activate
           CURR_TIME=$(date +%Y-%m-%d_%Hh-%Mm-%Ss)
           LOG_DIR="./logfiles"
           HTML_DIR="./htmlfiles"
@@ -77,6 +80,7 @@ jobs:
       # List files
       - name: Check if new files have been produced
         run: |
+          source .venv/bin/activate
           echo "🌲 This is the root directory:"
           ls
           echo "📁 These are the logfiles:"
@@ -101,6 +105,7 @@ jobs:
       # Clean JSON Data
       - name: Clean JSON data
         run: |
+          source .venv/bin/activate
           BLUE="\033[34m"
           RESET="\033[0m"
           
@@ -138,6 +143,7 @@ jobs:
       - name: Publish outputs
         id: publish
         run: |
+          source .venv/bin/activate
           SCRIPT_FILE=$(find locustfiles/*.py -type f -print -quit) # Get the first .py file
           PNG_FILE=$(find images/*.png -type f -print -quit) # Get the first .png file
           echo "script-file=$SCRIPT_FILE" >> "$GITHUB_OUTPUT"
