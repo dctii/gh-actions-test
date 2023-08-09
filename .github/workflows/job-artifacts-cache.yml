@@ -18,13 +18,19 @@ jobs:
       UPLOAD_ARTIFACTS: ${{ steps.publish.outputs.UPLOAD_ARTIFACTS }}
     env:
       UPLOAD_ARTIFACTS: false
+      SELF_HOSTED: true
     steps:
+      - name: Print runs-on value
+        run: |
+          echo "runs-on value: ${{ runner.os }}"
+
       # Get code from repo
       - name: Get code
         uses: actions/checkout@v3
 
       # Set up python
       - name: Set up python
+        if: steps.print_runs_on.outputs.runs-on != 'self-hosted'
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
