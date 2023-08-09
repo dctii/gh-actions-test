@@ -20,9 +20,10 @@ jobs:
       UPLOAD_ARTIFACTS: false
       SELF_HOSTED: true
     steps:
-      - name: Print runs-on value
+      - name: Print some values
         run: |
           echo "runs-on value: ${{ runner.os }}"
+          echo "GITHUB_ACTIONS: ${{ env.GITHUB_ACTIONS }}"
 
       # Get code from repo
       - name: Get code
