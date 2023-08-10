@@ -116,7 +116,15 @@ jobs:
           
           if ! jq '.' $JSON_PATH/$(echo $CURR_TIME).json 2>/dev/null; then
             echo -e "${BLUE}Invalid JSON detected!${RESET}"
-            sed -i '$d' $JSON_PATH/$(echo $CURR_TIME).json
+          
+            if [[ "$OSTYPE" == "darwin"* ]]; then
+              # macOS
+              sed -i '' '$d' $JSON_PATH/$(echo $CURR_TIME).json
+            else
+              # Linux and others
+              sed -i '$d' $JSON_PATH/$(echo $CURR_TIME).json
+            fi
+          
             if ! jq '.' $JSON_PATH/$(echo $CURR_TIME).json 2>/dev/null; then
               echo -e "${BLUE}JSON still invalid!${RESET}"
               exit 1
