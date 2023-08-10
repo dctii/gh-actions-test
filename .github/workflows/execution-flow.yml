@@ -1,5 +1,5 @@
 name: Execution Flow
-run-name: ${{ github.actor }} is testing out GitHub Actions with artifacts 🚀
+run-name: ${{ github.actor }} is testing execution flows
 on:
   workflow_dispatch:
   push:
@@ -150,7 +150,8 @@ jobs:
     steps:
       # Download artifacts
       - name: Get artifacts
-        if: needs.test.steps.upload_step.outcome == 'success'
+        # needs.<JOB_NAME>.steps.<STEP_ID>.outcome
+        if: needs.first-job.steps.upload_step.outcome == 'success'
         uses: actions/download-artifact@v3
         with:
           name: locust-output-files
@@ -167,8 +168,22 @@ jobs:
           echo "${{ needs.test.outputs.UPLOAD_ARTIFACTS }}"
           echo "${{ needs.test.steps.upload_step.outcome }}"
 
+
   third-independent-job:
     runs-on: self-hosted
     steps:
-      - name: Say Hello
-        run: echo "hello"
+      - name: Run if success
+        if: success()
+        run: echo "This as ran because there was only success in the previous step(s) or job(s)."
+
+      - name: Run if failure
+        if: failure()
+        run: echo "This was ran because there was a failure in a previous step and job."
+
+      - name: Run if cancelled
+        if: cancelled()
+        run: echo "This was ran because the test was cancelled by ${{ github.actor }}."
+
+      - name: Run always, even if cancelled
+        if: always()
+        run: echo "This was ran because it will always run no matter what."

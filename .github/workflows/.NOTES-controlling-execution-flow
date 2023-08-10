@@ -8,13 +8,47 @@ Controlling Execution Flow example:
 
 
 1. Conditionalities
+- special conditional functions:
+    - failure() - true when any previous step or job failed
+    - success() - true when non of the prvious steps have failed
+    - always() - step will always execute(), even when the workflow is cancelled
+    - cancelled()
 2. Running Jobs with a Matrix
 3. Re-using Workflows
 
+https://docs.github.com/en/actions/learn-github-actions/contexts#job-context
+https://docs.github.com/en/actions/learn-github-actions/contexts#jobs-context
 
-Jobs
+** Jobs **
 - if
 
-Steps
+Current Job:
+job
+job.container
+job.container.id
+job.container.network
+job.services
+job.services.<service_id>.id
+job.services.<service_id>.network
+job.services.<service_id>.ports
+job.status
+
+Jobs in Reusable Workflows (call
+jobs
+jobs.<job_id>..result
+jobs.<job_id>.outputs
+jobs.<job_id>.outputs.<output_name>
+
+
+
+https://docs.github.com/en/actions/learn-github-actions/contexts#steps-context
+
+** Steps **
 - if
 - continue-on-error
+
+steps
+steps.<step_id>.outputs
+steps.<step_id>.conclusion
+steps.<step_id>.outcome
+steps.<step_id>.outputs.<output_name>
