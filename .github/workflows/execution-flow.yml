@@ -171,6 +171,7 @@ jobs:
 
   third-independent-job:
     runs-on: self-hosted
+    needs: second-job
     steps:
       - name: Run if success
         if: success()
