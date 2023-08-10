@@ -177,11 +177,11 @@ jobs:
     steps:
       - name: Run if success
         if: success()
-        run: echo "This as ran because there was only success in the previous step(s) or job(s)."
+        run: echo "This as ran because there was only success in the previous step(s).
 
       - name: Run if failure
         if: failure()
-        run: echo "This was ran because there was a failure in a previous step and job."
+        run: echo "This was ran because there was a failure in a previous step"
 
       - name: Run if cancelled
         if: cancelled()
