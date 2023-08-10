@@ -28,7 +28,7 @@ jobs:
       UPLOAD_ARTIFACTS: ${{ steps.publish.outputs.UPLOAD_ARTIFACTS }}
     env:
       DEBUG: false
-      UPLOAD_ARTIFACTS: false
+      UPLOAD_ARTIFACTS: true
       SELF_HOSTED: true
     steps:
       - name: Print some values
@@ -136,7 +136,7 @@ jobs:
         if: env.UPLOAD_ARTIFACTS == 'true'
         uses: actions/upload-artifact@v3
         with:
-          name: locust-output-files
+          name: ${{ matrix.operating-system }}-${{ matrix.python-version }}-locust-output-files
           path: |
             ./logfiles/
             ./htmlfiles/
@@ -154,88 +154,3 @@ jobs:
           echo "script-file=$SCRIPT_FILE" >> "$GITHUB_OUTPUT"
           echo "png-file=$PNG_FILE" >> "$GITHUB_OUTPUT"
           echo "UPLOAD_ARTIFACTS=$UPLOAD_ARTIFACTS" >> "$GITHUB_OUTPUT"
-
-
-  second-job:
-    if: success()
-    needs: first-job
-    strategy:
-      matrix:
-        operating-system: [ ubuntu-latest, self-hosted]
-    runs-on: ${{ matrix.operating-system }}
-    steps:
-      # Download artifacts
-      - name: Get artifacts
-        # needs.<JOB_NAME>.steps.<STEP_ID>.outcome
-        if: needs.first-job.steps.upload_step.outcome == 'success'
-        uses: actions/download-artifact@v3
-        with:
-          name: locust-output-files
-
-
-      - name: List logs
-        run: ls ./logfiles
-
-      # Echo outputs from 'test' job
-      - name: Output filename
-        run: |
-          echo "${{ needs.test.outputs.script-file }}"
-          echo "${{ needs.test.outputs.png-file }}"
-          echo "${{ needs.test.outputs.UPLOAD_ARTIFACTS }}"
-          echo "${{ needs.test.steps.upload_step.outcome }}"
-
-  third-job:
-    needs: second-job
-    strategy:
-      matrix:
-        operating-system: [ ubuntu-latest, self-hosted ]
-    runs-on: ${{ matrix.operating-system }}
-    steps:
-      - name: I am finished
-        run: echo "I am finished."
-
-  fourth-job:
-    needs: third-job
-    strategy:
-      matrix:
-        operating-system: [ ubuntu-latest, self-hosted ]
-    runs-on: ${{ matrix.operating-system }}
-    steps:
-      - name: Say hello
-        run: echo "Hello!"
-
-  fifth-job:
-    needs: [second-job, third-job]
-    strategy:
-      matrix:
-        operating-system: [ ubuntu-latest, self-hosted ]
-    runs-on: ${{ matrix.operating-system }}
-    if: failure()
-    steps:
-      - name: Run if success
-        if: success()
-        run: echo "This as ran because there was only success in the previous step(s)
-
-      - name: Run if failure
-        if: failure()
-        run: echo "This was ran because there was a failure in a previous step"
-
-      - name: Run if cancelled
-        if: cancelled()
-        run: echo "This was ran because the test was cancelled by ${{ github.actor }}."
-
-      - name: Run always, even if cancelled
-        if: always()
-        run: echo "This was ran because it will always run no matter what."
-
-  sixth-job:
-    needs: [fourth-job, fifth-job]
-    strategy:
-      matrix:
-        operating-system: [ ubuntu-latest, self-hosted ]
-    runs-on: ${{ matrix.operating-system }}
-    steps:
-      - name: Output info
-        run: |
-          echo "Something went right or wrong
-          echo "${{ toJSON(github) }}"
