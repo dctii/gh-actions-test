@@ -169,11 +169,17 @@ jobs:
           echo "${{ needs.test.outputs.UPLOAD_ARTIFACTS }}"
           echo "${{ needs.test.steps.upload_step.outcome }}"
 
-
-  third-independent-job:
-    if: failure()
+  third-job:
     runs-on: self-hosted
     needs: [first-job, second-job]
+    steps:
+      - name: Say hello
+        run: echo "Hello!"
+
+  fourth-job:
+    if: failure()
+    runs-on: self-hosted
+    needs: [first-job, second-job, third-job]
     steps:
       - name: Run if success
         if: success()
