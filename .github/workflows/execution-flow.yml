@@ -81,7 +81,7 @@ jobs:
 
       # List files
       - name: Check if new files have been produced
-        if: DEBUG == 'false'
+        if: env.DEBUG == 'false'
         run: |
           source .venv/bin/activate
           echo "🌲 This is the root directory:"
