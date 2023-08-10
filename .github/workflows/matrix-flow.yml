@@ -116,7 +116,7 @@ jobs:
           
           if ! jq '.' $JSON_PATH/$(echo $CURR_TIME).json 2>/dev/null; then
             echo -e "${BLUE}Invalid JSON detected!${RESET}"
-            sed -i '' '$d' $JSON_PATH/$(echo $CURR_TIME).json
+            sed -i '$d' $JSON_PATH/$(echo $CURR_TIME).json
             if ! jq '.' $JSON_PATH/$(echo $CURR_TIME).json 2>/dev/null; then
               echo -e "${BLUE}JSON still invalid!${RESET}"
               exit 1
