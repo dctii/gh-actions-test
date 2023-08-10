@@ -170,12 +170,19 @@ jobs:
           echo "${{ needs.test.steps.upload_step.outcome }}"
 
   third-job:
+    needs: second-job
+    runs-on: self-hosted
+    steps:
+      - name: I am finished
+        run: echo "I am finished."
+
+  fourth-job:
     runs-on: self-hosted
     steps:
       - name: Say hello
         run: echo "Hello!"
 
-  fourth-job:
+  fifth-job:
     if: always()
     runs-on: self-hosted
     needs: [first-job, third-job]
