@@ -177,7 +177,7 @@ jobs:
     steps:
       - name: Run if success
         if: success()
-        run: echo "This as ran because there was only success in the previous step(s).
+        run: echo "This as ran because there was only success in the previous step(s)
 
       - name: Run if failure
         if: failure()
