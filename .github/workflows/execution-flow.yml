@@ -186,7 +186,7 @@ jobs:
   fifth-job:
     if: always()
     runs-on: self-hosted
-    needs: third-job
+    needs: [third-job, fourth-job]
     steps:
       - name: Run if success
         if: success()
