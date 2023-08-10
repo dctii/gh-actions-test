@@ -49,6 +49,16 @@ https://docs.github.com/en/actions/learn-github-actions/contexts#steps-context
 
 steps
 steps.<step_id>.outputs
-steps.<step_id>.conclusion
-steps.<step_id>.outcome
+steps.<step_id>.conclusion --> ( conclusion == 'success' ) ⊃ ( continue-on-error: true && steps.outcome == 'failure' )
+steps.<step_id>.outcome --> ( outcome == 'failure' ) ⊃ ( continue-on-error: true && steps.outcome == 'failure' )
 steps.<step_id>.outputs.<output_name>
+
+
+
+
+
+** Actions can have outputs **
+https://github.com/actions/cache
+
+Example: from the above action: `cache-hit`
+- e.g., `if: steps.cache-primes.outputs.cache-hit != 'true''`
