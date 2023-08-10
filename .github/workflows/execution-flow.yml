@@ -145,6 +145,7 @@ jobs:
 
 
   second-job:
+    if: success()
     needs: first-job
     runs-on: self-hosted
     steps:
@@ -170,6 +171,7 @@ jobs:
 
 
   third-independent-job:
+    if: always()
     runs-on: self-hosted
     needs: second-job
     steps:
