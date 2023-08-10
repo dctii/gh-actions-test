@@ -43,6 +43,7 @@ jobs:
       - name: Announce ending of process
         id: check_me
         run: echo "ALL DONE! 🛑
+        continue-on-error: true
 
       - name: Was the previous test successful?
         run: echo "The previous test was successful!"
@@ -52,5 +53,6 @@ jobs:
         run: echo "The previous test failed!"
         if: steps.check_me.outcome == 'failure'
 
-
+        # https://docs.github.com/en/free-pro-team@latest/rest/actions/workflow-jobs?apiVersion=2022-11-28#download-job-logs-for-a-workflow-run
+        # https://docs.github.com/en/actions/learn-github-actions/contexts#steps-context
         # https://github.com/dctii/gh-actions-test/actions/runs/5815414506/job/15766941379
