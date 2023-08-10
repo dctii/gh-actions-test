@@ -184,7 +184,7 @@ jobs:
         run: echo "Hello!"
 
   fifth-job:
-    needs: [third-job, fourth-job]
+    needs: [second-job, fourth-job]
     runs-on: self-hosted
     if: failure()
     steps:
