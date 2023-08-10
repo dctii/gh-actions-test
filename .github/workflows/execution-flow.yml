@@ -203,3 +203,12 @@ jobs:
       - name: Run always, even if cancelled
         if: always()
         run: echo "This was ran because it will always run no matter what."
+
+  sixth-job:
+    needs: [fourth-job, fifth-job]
+    runs-on: self-hosted
+    steps:
+      - name: Output info
+        run: |
+          echo "Something went right or wrong
+          echo "${{ toJSON(github) }}"
