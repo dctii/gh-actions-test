@@ -177,6 +177,7 @@ jobs:
         run: echo "I am finished."
 
   fourth-job:
+    needs: third-job
     runs-on: self-hosted
     steps:
       - name: Say hello
@@ -185,7 +186,7 @@ jobs:
   fifth-job:
     if: always()
     runs-on: self-hosted
-    needs: fourth-job
+    needs: third-job
     steps:
       - name: Run if success
         if: success()
