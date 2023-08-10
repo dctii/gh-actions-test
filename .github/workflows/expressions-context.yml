@@ -40,5 +40,8 @@ jobs:
     needs: standard
     runs-on: ubuntu-latest
     steps:
+      - name: Output GitHub Context
+        run: echo "${{ toJSON(github) }}"
+
       - name: Announce ending of process
         run: echo "ALL DONE! 🛑"
