@@ -40,8 +40,17 @@ jobs:
     needs: standard
     runs-on: ubuntu-latest
     steps:
-      - name: Output GitHub Context
-        run: echo "${{ toJSON(github) }}"
-
       - name: Announce ending of process
-        run: echo "ALL DONE! 🛑"
+        id: check_me
+        run: echo "ALL DONE! 🛑
+
+      - name: Was the previous test successful?
+        run: echo "The previous test was successful!"
+        if: steps.check_me.outcome == 'success'
+
+      - name: The previous test failed
+        run: echo "The previous test failed!"
+        if: steps.check_me.outcome == 'failure'
+
+
+        # https://github.com/dctii/gh-actions-test/actions/runs/5815414506/job/15766941379
