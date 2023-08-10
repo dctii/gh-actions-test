@@ -1,4 +1,4 @@
-name: Execution Flow
+name: Matrix Flow
 run-name: ${{ github.actor }} is testing execution flows
 on:
   workflow_dispatch:
