@@ -12,13 +12,13 @@ jobs:
   first-job:
     strategy:
       matrix:
-        python-version: [3.7, 3.9, 3.10, 3.11]
+        python-version: ["3.7", "3.9", "3.10", "3.11"]
         operating-system: [ubuntu-latest, self-hosted]
         include:
-          - python-version: 3.8
+          - python-version: "3.8"
             operating-system: self-hosted
         exclude:
-          - python-version: 3.7
+          - python-version: "3.7"
             operating-system: self-hosted
 #    runs-on: ubuntu-latest
     runs-on: ${{ matrix.operating-system }}
