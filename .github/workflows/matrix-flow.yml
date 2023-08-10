@@ -29,7 +29,7 @@ jobs:
     env:
       DEBUG: false
       UPLOAD_ARTIFACTS: true
-      SELF_HOSTED: true
+#      SELF_HOSTED: true
     steps:
       - name: Print some values
         run: |
@@ -43,7 +43,7 @@ jobs:
       # Set up python
       - name: Set up python
         id: setup_python
-        if: env.SELF_HOSTED == 'false'
+        if: ${{ matrix.operating-system }} != 'self-hosted'
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
@@ -51,7 +51,7 @@ jobs:
 
       # Install python dependencies
       - name: Install dependencies
-        if: steps.setup_python.outputs.cache-hit != 'true'
+        if: ${{ matrix.operating-system }} == 'self-hosted' && steps.setup_python.outputs.cache-hit != 'true'
         run: |
           python3 -m venv .venv
           source .venv/bin/activate
