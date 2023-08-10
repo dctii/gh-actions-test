@@ -49,27 +49,10 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: 'pip'
 
-      - name: Get pip cache dir
-        if: ${{ matrix.operating-system }} == 'self-hosted'
-        id: pip-cache
-        run: |
-          python3 -m venv .venv
-          source .venv/bin/activate
-          echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
-
-      - name: pip cache
-        if: ${{ matrix.operating-system }} == 'self-hosted'
-        id: standard_py_cached
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.pip-cache.outputs.dir }}
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: ${{ runner.os}}-pip-
-
       # Install python dependencies
       - name: Install dependencies
-        if: steps.setup_python.outputs.cache-hit != 'true' || steps.standard_py_cached.cache-hit != 'true'
         run: |
+          python3 -m venv .venv
           source .venv/bin/activate
           pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
