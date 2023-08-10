@@ -1,0 +1,20 @@
+Controlling Execution Flow example:
+
+1. Get code
+2. Install dependencies
+3. Lint code
+4. Run automated tests
+5. Upload report
+
+
+1. Conditionalities
+2. Running Jobs with a Matrix
+3. Re-using Workflows
+
+
+Jobs
+- if
+
+Steps
+- if
+- continue-on-error
