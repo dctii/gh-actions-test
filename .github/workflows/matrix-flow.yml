@@ -29,13 +29,12 @@ jobs:
     env:
       DEBUG: false
       UPLOAD_ARTIFACTS: true
-#      SELF_HOSTED: true
+      SELF_HOSTED: true
     steps:
       - name: Print some values
         run: |
           echo "runs-on value: ${{ runner.os }}"
           echo "GITHUB_ACTIONS: $GITHUB_ACTIONS"
-
       # Get code from repo
       - name: Get code
         uses: actions/checkout@v3
@@ -43,7 +42,7 @@ jobs:
       # Set up python
       - name: Set up python
         id: setup_python
-        if: ${{ matrix.operating-system }} == "ubuntu-latest"
+        if: env.SELF_HOSTED == 'false'
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
@@ -51,12 +50,12 @@ jobs:
 
       # Install python dependencies
       - name: Install dependencies
+        if: steps.setup_python.outputs.cache-hit != 'true'
         run: |
           python3 -m venv .venv
           source .venv/bin/activate
           pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
-
       # Run locust test and output results
       - name: Run locust test
         run: |
@@ -89,7 +88,6 @@ jobs:
             --only-summary | awk '/\[/{flag=1} flag; /\]/{flag=0; print}' > $JSON_DIR/$(echo $CURR_TIME).json
           
           unset CURR_TIME LOG_DIR HTML_DIR CSV_DIR
-
       # List files
       - name: Check if new files have been produced
         if: env.DEBUG == 'false'
@@ -105,7 +103,6 @@ jobs:
           ls ./csvfiles
           echo "📁 These are the jsonfiles:"
           ls ./jsonfiles
-
       # Clean JSON Data
       - name: Clean JSON data
         run: |
@@ -149,8 +146,6 @@ jobs:
             ./htmlfiles/
             ./csvfiles/
             ./jsonfiles/
-
-
       # Publish outputs
       - name: Publish outputs
         id: publish
