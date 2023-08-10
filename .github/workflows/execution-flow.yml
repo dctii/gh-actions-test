@@ -177,9 +177,9 @@ jobs:
         run: echo "Hello!"
 
   fourth-job:
-    if: failure()
+    if: always
     runs-on: self-hosted
-    needs: [first-job, second-job, third-job]
+    needs: [first-job, third-job]
     steps:
       - name: Run if success
         if: success()
