@@ -1,4 +1,4 @@
-name: Job Artifacts and Outputs Test
+name: Execution Flow
 run-name: ${{ github.actor }} is testing out GitHub Actions with artifacts 🚀
 on:
   workflow_dispatch:
