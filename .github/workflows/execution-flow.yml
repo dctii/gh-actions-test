@@ -171,9 +171,9 @@ jobs:
 
 
   third-independent-job:
-    if: always()
+    if: failure
     runs-on: self-hosted
-    needs: second-job
+    needs: [first-job, second-job]
     steps:
       - name: Run if success
         if: success()
