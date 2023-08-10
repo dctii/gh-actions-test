@@ -43,17 +43,33 @@ jobs:
       # Set up python
       - name: Set up python
         id: setup_python
-        if: ${{ matrix.operating-system }} != 'self-hosted'
+        if: ${{ matrix.operating-system }} == "ubuntu-latest"
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
           cache: 'pip'
 
-      # Install python dependencies
-      - name: Install dependencies
-        if: ${{ matrix.operating-system }} == 'self-hosted' && steps.setup_python.outputs.cache-hit != 'true'
+      - name: Get pip cache dir
+        if: ${{ matrix.operating-system }} == 'self-hosted'
+        id: pip-cache
         run: |
           python3 -m venv .venv
+          source .venv/bin/activate
+          echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
+
+      - name: pip cache
+        if: ${{ matrix.operating-system }} == 'self-hosted'
+        id: standard_py_cached
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: ${{ runner.os}}-pip-
+
+      # Install python dependencies
+      - name: Install dependencies
+        if: steps.setup_python.outputs.cache-hit != 'true' || steps.standard_py_cached.cache-hit != 'true'
+        run: |
           source .venv/bin/activate
           pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
