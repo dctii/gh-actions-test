@@ -171,7 +171,6 @@ jobs:
 
   third-job:
     runs-on: self-hosted
-    needs: [first-job, second-job]
     steps:
       - name: Say hello
         run: echo "Hello!"
