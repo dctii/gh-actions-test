@@ -1,0 +1,196 @@
+name: 01-Flow_That_Reuses_Flow
+run-name: ${{ github.actor }} is testing reusable flows
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths: # if activity in this folder or file, permitted. paths-ignore is the opposite
+      - '.github/workflows/execution-flow.yml'
+
+jobs:
+  first-job:
+#    runs-on: ubuntu-latest
+    runs-on: self-hosted
+    outputs: # add identifiers by which you can access the output value
+      script-file: ${{ steps.publish.outputs.script-file }}
+      png-file: ${{ steps.publish.outputs.png-file }}
+      UPLOAD_ARTIFACTS: ${{ steps.publish.outputs.UPLOAD_ARTIFACTS }}
+    env:
+      DEBUG: false
+      UPLOAD_ARTIFACTS: false
+      SELF_HOSTED: true
+    steps:
+      - name: Print some values
+        run: |
+          echo "runs-on value: ${{ runner.os }}"
+          echo "GITHUB_ACTIONS: $GITHUB_ACTIONS"
+
+      # Get code from repo
+      - name: Get code
+        uses: actions/checkout@v3
+
+      # Set up python
+      - name: Set up python
+        id: setup_python
+        if: env.SELF_HOSTED == 'false'
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      # Install python dependencies
+      - name: Install dependencies
+        if: steps.setup_python.outputs.cache-hit != 'true'
+        run: |
+          python3 -m venv .venv
+          source .venv/bin/activate
+          pip install --upgrade pip setuptools wheel
+          pip install -r requirements.txt
+
+      # Run locust test and output results
+      - name: Run locust test
+        run: |
+          source .venv/bin/activate
+          CURR_TIME=$(date +%Y-%m-%d_%Hh-%Mm-%Ss)
+          LOG_DIR="./logfiles"
+          HTML_DIR="./htmlfiles"
+          CSV_DIR="./csvfiles/$CURR_TIME"
+          JSON_DIR="./jsonfiles/$CURR_TIME"
+          
+          mkdir -p $LOG_DIR
+          mkdir -p $HTML_DIR
+          mkdir -p $CSV_DIR
+          mkdir -p $JSON_DIR
+          
+          echo "JSON_PATH=./jsonfiles/$CURR_TIME" >> $GITHUB_ENV
+          echo "CURR_TIME=$CURR_TIME" >> $GITHUB_ENV
+          
+          locust \
+            -f locustfiles/test.py \
+            --users 25 \
+            --spawn-rate 5 \
+            --run-time 5s \
+            --headless \
+            --logfile $LOG_DIR/$(echo $CURR_TIME)_mylog.log --loglevel INFO \
+            --html $HTML_DIR/$(echo $CURR_TIME)_myhtml.html \
+            --csv $CSV_DIR/$(echo $CURR_TIME) --csv-full-history \
+            --json \
+            --exit-code-on-error 1 \
+            --only-summary | awk '/\[/{flag=1} flag; /\]/{flag=0; print}' > $JSON_DIR/$(echo $CURR_TIME).json
+          
+          unset CURR_TIME LOG_DIR HTML_DIR CSV_DIR
+
+      # List files
+      - name: Check if new files have been produced
+        if: env.DEBUG == 'false'
+        run: |
+          source .venv/bin/activate
+          echo "🌲 This is the root directory:"
+          ls
+          echo "📁 These are the logfiles:"
+          ls ./logfiles
+          echo "📁 These are the htmlfiles:"
+          ls ./htmlfiles
+          echo "📁 These are the csvfiles:"
+          ls ./csvfiles
+          echo "📁 These are the jsonfiles:"
+          ls ./jsonfiles
+
+      # Clean JSON Data
+      - name: Clean JSON data
+        run: |
+          source .venv/bin/activate
+          BLUE="\033[34m"
+          RESET="\033[0m"
+          
+          if ! jq '.' $JSON_PATH/$(echo $CURR_TIME).json 2>/dev/null; then
+            echo -e "${BLUE}Invalid JSON detected!${RESET}"
+            sed -i '$d' $JSON_PATH/$(echo $CURR_TIME).json
+            if ! jq '.' $JSON_PATH/$(echo $CURR_TIME).json 2>/dev/null; then
+              echo -e "${BLUE}JSON still invalid!${RESET}"
+              exit 1
+            else
+              echo -e "${BLUE}JSON is valid.${RESET}"
+            fi
+          else
+            echo -e "${BLUE}JSON is valid.${RESET}"
+          fi
+          
+          unset BLUE RESET
+        continue-on-error: true
+
+    # Upload artifacts
+      - name: Upload artifacts
+        id: upload_step
+        if: env.UPLOAD_ARTIFACTS == 'true'
+        uses: actions/upload-artifact@v3
+        with:
+          name: locust-output-files
+          path: |
+            ./logfiles/
+            ./htmlfiles/
+            ./csvfiles/
+            ./jsonfiles/
+
+
+      # Publish outputs
+      - name: Publish outputs
+        id: publish
+        run: |
+          source .venv/bin/activate
+          SCRIPT_FILE=$(find locustfiles/*.py -type f -print -quit) # Get the first .py file
+          PNG_FILE=$(find images/*.png -type f -print -quit) # Get the first .png file
+          echo "script-file=$SCRIPT_FILE" >> "$GITHUB_OUTPUT"
+          echo "png-file=$PNG_FILE" >> "$GITHUB_OUTPUT"
+          echo "UPLOAD_ARTIFACTS=$UPLOAD_ARTIFACTS" >> "$GITHUB_OUTPUT"
+
+
+  second-job:
+    if: success()
+    needs: first-job
+    uses: ./.github/workflows/02-reusable-flow.yml
+
+  third-job:
+    needs: second-job
+    runs-on: self-hosted
+    steps:
+      - name: I am finished
+        run: echo "I am finished."
+
+  fourth-job:
+    needs: third-job
+    runs-on: self-hosted
+    steps:
+      - name: Say hello
+        run: echo "Hello!"
+
+  fifth-job:
+    needs: [second-job, third-job]
+    runs-on: self-hosted
+    if: failure()
+    steps:
+      - name: Run if success
+        if: success()
+        run: echo "This as ran because there was only success in the previous step(s)
+
+      - name: Run if failure
+        if: failure()
+        run: echo "This was ran because there was a failure in a previous step"
+
+      - name: Run if cancelled
+        if: cancelled()
+        run: echo "This was ran because the test was cancelled by ${{ github.actor }}."
+
+      - name: Run always, even if cancelled
+        if: always()
+        run: echo "This was ran because it will always run no matter what."
+
+  sixth-job:
+    needs: [fourth-job, fifth-job]
+    runs-on: self-hosted
+    steps:
+      - name: Output info
+        run: |
+          echo "Something went right or wrong
+          echo "${{ toJSON(github) }}"
