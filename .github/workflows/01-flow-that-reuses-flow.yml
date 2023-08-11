@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths: # if activity in this folder or file, permitted. paths-ignore is the opposite
-      - '.github/workflows/execution-flow.yml'
+      - '.github/workflows/01-flow-that-reuses-flow.yml'
 
 jobs:
   first-job:
