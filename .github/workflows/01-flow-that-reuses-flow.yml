@@ -150,6 +150,8 @@ jobs:
     if: success()
     needs: first-job
     uses: ./.github/workflows/02-reusable-flow.yml
+    with:
+      artifact-name: locust-output-files
 
   third-job:
     needs: second-job

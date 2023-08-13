@@ -1,20 +1,29 @@
   name: 02-Reusable_Flow
-  on: workflow_call
+  on:
+    workflow_call:
+      inputs:
+        artifact-name:
+          type: string
+          description: The name of the locust output file
+          required: true
+#          default: output-file
   jobs:
     second-job:
       runs-on: self-hosted
       steps:
         - name: Say something
           run: echo "This is the second job!"
-#        # Download artifacts
-#        - name: Get artifacts
-#          # needs.<JOB_NAME>.steps.<STEP_ID>.outcome
-#          if: needs.first-job.steps.upload_step.outcome == 'success'
-#          uses: actions/download-artifact@v3
-#          with:
-#            name: locust-output-files
-#        - name: List logs
-#          run: ls ./logfiles
+
+        # Download artifacts
+        - name: Get artifacts
+          # needs.<JOB_NAME>.steps.<STEP_ID>.outcome
+          if: needs.first-job.steps.upload_step.outcome == 'success'
+          uses: actions/download-artifact@v3
+          with:
+            name: ${{ inputs.artifact-name }}
+
+        - name: List logs
+          run: ls ./logfiles
 #
 #        # Echo outputs from 'test' job
 #        - name: Output filename
