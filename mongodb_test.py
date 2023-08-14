@@ -20,8 +20,8 @@ if os.environ.get("GITHUB_ACTIONS") is None:
 elif os.environ.get("GITHUB_ACTIONS") == "true":
     USERNAME = os.environ.get("MONGO_USER")
     PASSWORD = os.environ.get("MONGO_PASS")
-    print("USERNAME:" + os.environ.get("MONGODB_INITDB_ROOT_USERNAME"))
-    print("PASSWORD: " + os.environ.get("MONGODB_INITDB_ROOT_PASSWORD"))
+    print("USERNAME:" + USERNAME)
+    print("PASSWORD: " + PASSWORD)
     print("HOST: " + HOST)
     print("PORT: " + PORT)
     MONGO_URI = f"mongodb://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/admin"
