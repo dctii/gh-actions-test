@@ -156,6 +156,14 @@ jobs:
       # Passes secret value to next workflow
       little-secret: 'this-is-a-little-secret'
 
+  print-second-job-result:
+    needs: second-job
+    runs-on: self-hosted
+    steps:
+      - name: Print second-job output
+        run: echo "${{ needs.second-job.outputs.result }}"
+
+
   third-job:
     needs: second-job
     runs-on: self-hosted

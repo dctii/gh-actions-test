@@ -10,8 +10,15 @@
       secrets:
         little-secret:
           required: true
+      outputs:
+        result:
+          description: The result of the second-job operation
+          # Value is taken from the steps of the job
+          value: ${{ jobs.second-job.outputs.outcome }}
   jobs:
     second-job:
+      outputs:
+        outcome: ${{ steps.set-result.outputs.step-result }}
       runs-on: self-hosted
       steps:
         - name: Say something
@@ -29,6 +36,10 @@
             ls ./logfiles
             # Uses little-secret passed from previous workflow
             echo "${{ secrets.little-secret }}"
+
+        - name: Set result output
+          id: set-result
+          run: echo "step-result=success" >> $GITHUB_OUTPUT
 #
 #        # Echo outputs from 'test' job
 #        - name: Output filename
