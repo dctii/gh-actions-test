@@ -3,16 +3,14 @@ import time
 from pymongo import MongoClient
 from dotenv import load_dotenv
 
-load_dotenv()
+if (
+    os.environ.get("GITHUB_ACTIONS") is None
+    or os.environ.get("GITHUB_ACTIONS") is not False
+):
+    load_dotenv()
 
-PORT = None
-HOST = None
-if os.environ.get("GITHUB_ACTIONS"):
-    PORT = os.environ.get("MONGODB_PORT")
-    HOST = os.environ.get("MONGODB_HOST")
-else:
-    PORT = os.environ.get("MONGODB_PORT")
-    HOST = os.environ.get("MONGODB_HOST")
+PORT = os.environ.get("MONGODB_PORT")
+HOST = os.environ.get("MONGODB_HOST")
 
 # Generating the client
 print("\033[32m# Generating the client...\033[0m")  # Cyan comment
