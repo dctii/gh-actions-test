@@ -3,7 +3,7 @@ import time
 from pymongo import MongoClient
 from dotenv import load_dotenv
 
-if os.environ.get("GITHUB_ACTIONS") is None:
+if os.environ.get("GITHUB_ACTIONS") != "true":
     load_dotenv()
 
 PORT = os.environ.get("MONGODB_PORT")
@@ -21,10 +21,10 @@ if os.environ.get("GITHUB_ACTIONS") is None:
 elif os.environ.get("GITHUB_ACTIONS") == "true":
     USERNAME = os.environ.get("MONGODB_INITDB_ROOT_USERNAME")
     PASSWORD = os.environ.get("MONGODB_INITDB_ROOT_PASSWORD")
-    print(USERNAME)
-    print(PASSWORD)
+    print("USERNAME:" + USERNAME)
+    print("PASSWORD: " + PASSWORD)
     MONGO_URI = f"mongodb://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/admin"
-    print(MONGO_URI)
+    print("MONGO_URI:" + MONGO_URI)
 
 # Generating the client
 print("\033[32m# Generating the client...\033[0m")  # Cyan comment
