@@ -1,0 +1,10 @@
+Example issue:
+- e.g. Run tests, should not manipulation production db
+    - solution: use a testing db with a service container
+
+
+Service container:
+    - Runs inside a container
+    - runs extra services side-by-side with your jobs and their steps
+    - run db in container
+    - job steps can communicate with service containers (and the services exposed by them)

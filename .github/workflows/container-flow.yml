@@ -1,11 +1,11 @@
-name: DOCKER FLOW
+name: CONTAINER FLOW
 on:
   workflow_dispatch:
   push:
     branches:
       - main
     paths: # if activity in this folder or file, permitted. paths-ignore is the opposite
-      - '.github/workflows/docker-flow.yml'
+      - '.github/workflows/container-flow.yml'
 jobs:
   testing-one:
     runs-on: ubuntu-latest
@@ -29,6 +29,32 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: python:3.11
+#    env:
+#      MONGODB_CONNECTION_PROTOCOL: mongodb+srv
+#      MONGODB_CLUSTER_ADDRESS: <address_here>
+#      MONGODB_USERNAME: <username secret here>
+#      MONGODB_PASSWORD: <username secret here>
+#      MONGODB_PORT: 8080
+    services:
+      # PostgreSQL: https://docs.github.com/en/actions/using-containerized-services/creating-postgresql-service-containers
+      # Label used to access the service container
+      redis:
+        # Docker Hub image
+        image: redis
+        # Opens tcp port 6379 on the host and service container
+        ports:
+          - 6739:6379
+        options: --entrypoint redis-server
+      mongodb:
+        # https://www.mongodb.com/compatibility/docker
+        image: mongo
+        ports:
+          - 27017:27017
+        env:
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: example
+
+
     steps:
       - name: Get code
         uses: actions/checkout@v3
