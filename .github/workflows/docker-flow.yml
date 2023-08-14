@@ -35,7 +35,6 @@ jobs:
 
       - name: Run tests
         run: |
-          source .venv/bin/activate
           pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
           CURR_TIME=$(date +%Y-%m-%d_%Hh-%Mm-%Ss)
