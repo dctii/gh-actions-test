@@ -31,9 +31,9 @@ jobs:
       image: python:3.11
       # NOTE: Can use services without a container!
       env:
-        REDIS_HOST: 127.0.0.1
+        REDIS_HOST: redis
         REDIS_PORT: 6379
-        MONGODB_HOST: 127.0.0.1
+        MONGODB_HOST: mongodb
         MONGODB_PORT: 27017
     services:
       # Label used to access the service container
@@ -116,7 +116,7 @@ jobs:
           echo "Running redis test..."
           python3 redis_test.py
 
-      # NOTE:
+      # NOTE: MongoDB Test
       - name: Talk to MongoDB
         if: always()
         id: mongodb-comm
