@@ -4,6 +4,7 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 
 if os.environ.get("GITHUB_ACTIONS") != "true":
+    print("Executing load_dotenv()")
     load_dotenv()
 
 PORT = os.environ.get("MONGODB_PORT")
@@ -12,17 +13,17 @@ MONGO_URI = None
 USERNAME = None
 PASSWORD = None
 
-print("GITHUB_ACTIONS VALUE: ")
-print(os.environ.get("GITHUB_ACTIONS"))
 
 if os.environ.get("GITHUB_ACTIONS") is None:
     MONGO_URI = f"mongodb://{HOST}:{PORT}/ghActionsTest"
     print(MONGO_URI)
 elif os.environ.get("GITHUB_ACTIONS") == "true":
-    USERNAME = os.environ.get("MONGODB_INITDB_ROOT_USERNAME")
-    PASSWORD = os.environ.get("MONGODB_INITDB_ROOT_PASSWORD")
-    print("USERNAME:" + USERNAME)
-    print("PASSWORD: " + PASSWORD)
+    USERNAME = os.environ.get("MONGO_USER")
+    PASSWORD = os.environ.get("MONGO_PASS")
+    print("USERNAME:" + os.environ.get("MONGODB_INITDB_ROOT_USERNAME"))
+    print("PASSWORD: " + os.environ.get("MONGODB_INITDB_ROOT_PASSWORD"))
+    print("HOST: " + HOST)
+    print("PORT: " + PORT)
     MONGO_URI = f"mongodb://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/admin"
     print("MONGO_URI:" + MONGO_URI)
 
