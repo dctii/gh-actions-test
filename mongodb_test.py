@@ -12,6 +12,9 @@ MONGO_URI = None
 USERNAME = None
 PASSWORD = None
 
+print("GITHUB_ACTIONS VALUE: ")
+print(os.environ.get("GITHUB_ACTIONS"))
+
 if os.environ.get("GITHUB_ACTIONS") is None:
     MONGO_URI = f"mongodb://{HOST}:{PORT}/admin"
 else:
