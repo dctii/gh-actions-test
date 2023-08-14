@@ -2,11 +2,12 @@
   on:
     workflow_call:
       inputs:
+        # Take input from workflow that calls this reusable workflow
         artifact-name:
           type: string
           description: The name of the locust output file
           required: true
-#          default: output-file
+          default: ''
   jobs:
     second-job:
       runs-on: self-hosted
@@ -17,7 +18,7 @@
         # Download artifacts
         - name: Get artifacts
           # needs.<JOB_NAME>.steps.<STEP_ID>.outcome
-          if: needs.first-job.steps.upload_step.outcome == 'success'
+          if: default != ''
           uses: actions/download-artifact@v3
           with:
             name: ${{ inputs.artifact-name }}

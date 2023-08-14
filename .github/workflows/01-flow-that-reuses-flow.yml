@@ -142,15 +142,14 @@ jobs:
           SCRIPT_FILE=$(find locustfiles/*.py -type f -print -quit) # Get the first .py file
           PNG_FILE=$(find images/*.png -type f -print -quit) # Get the first .png file
           echo "script-file=$SCRIPT_FILE" >> "$GITHUB_OUTPUT"
-          echo "png-file=$PNG_FILE" >> "$GITHUB_OUTPUT"
-          echo "UPLOAD_ARTIFACTS=$UPLOAD_ARTIFACTS" >> "$GITHUB_OUTPUT"
-
+          echo "2
 
   second-job:
     if: success()
     needs: first-job
     uses: ./.github/workflows/02-reusable-flow.yml
     with:
+      # Sends input as key-value pair to reusable workflow
       artifact-name: locust-output-files
 
   third-job:
