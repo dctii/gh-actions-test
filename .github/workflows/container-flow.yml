@@ -60,6 +60,8 @@ jobs:
       # NOTE: Locust Tests
       - name: Run locust tests
         run: |
+          python3 -m venv .venv
+          source .venv/bin/activate
           pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
           CURR_TIME=$(date +%Y-%m-%d_%Hh-%Mm-%Ss)
@@ -105,14 +107,18 @@ jobs:
 
     # NOTE: Redis Test
       - name: Talk to Redis
+        if: always()
         id: redis-comm
         run: |
+          source .venv/bin/activate
           echo "Running redis test..."
           python3 redis_test.py
 
-    # NOTE:
+      # NOTE:
       - name: Talk to MongoDB
+        if: always()
         id: mongodb-comm
         run: |
+          source .venv/bin/activate
           echo "Running mongodb test..."
           python3 mongodb_test.py
