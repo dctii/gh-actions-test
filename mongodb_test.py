@@ -13,17 +13,17 @@ USERNAME = None
 PASSWORD = None
 
 if os.environ.get("GITHUB_ACTIONS") is None:
-    MONGO_URI = f"mongodb://{HOST}:{PORT}/ghActionsTest"
+    MONGO_URI = f"mongodb://{HOST}:{PORT}/admin"
 else:
     USERNAME = os.environ.get("MONGODB_INITDB_ROOT_USERNAME")
     PASSWORD = os.environ.get("MONGODB_INITDB_ROOT_PASSWORD")
-    MONGO_URI = f"mongodb://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/ghActionsTest"
+    MONGO_URI = f"mongodb://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/admin"
 
 # Generating the client
 print("\033[32m# Generating the client...\033[0m")  # Cyan comment
 time.sleep(1)
 client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
-db = client.ghActionsTest
+db = client["ghActionsTest"]
 collection = db.exampleCollection
 document = {"someKey": "someVal"}
 
