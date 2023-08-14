@@ -29,14 +29,12 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: python:3.11
-#    env:
-#      MONGODB_CONNECTION_PROTOCOL: mongodb+srv
-#      MONGODB_CLUSTER_ADDRESS: <address_here>
-#      MONGODB_USERNAME: <username secret here>
-#      MONGODB_PASSWORD: <username secret here>
-#      MONGODB_PORT: 8080
+      env:
+        REDIS_HOST: 127.0.0.1
+        REDIS_PORT: 6739
+        MONGODB_HOST: 127.0.0.1
+        MONGODB_PORT: 27017
     services:
-      # PostgreSQL: https://docs.github.com/en/actions/using-containerized-services/creating-postgresql-service-containers
       # Label used to access the service container
       redis:
         # Docker Hub image
@@ -59,7 +57,8 @@ jobs:
       - name: Get code
         uses: actions/checkout@v3
 
-      - name: Run tests
+      # NOTE: Locust Tests
+      - name: Run locust tests
         run: |
           pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
@@ -92,7 +91,7 @@ jobs:
 
           unset CURR_TIME LOG_DIR HTML_DIR CSV_DIR
 
-    # Upload artifacts
+    # NOTE: Upload artifacts
       - name: Upload artifacts
         id: upload_step
         uses: actions/upload-artifact@v3
@@ -103,3 +102,17 @@ jobs:
             ./htmlfiles/
             ./csvfiles/
             ./jsonfiles/
+
+    # NOTE: Redis Test
+      - name: Talk to Redis
+        id: redis-comm
+        run: |
+          echo "Running redis test...
+          python3 redis_test.py
+
+    # NOTE:
+      - name: Talk to MongoDB
+        id: redis-comm
+        run: |
+          echo "Running mongodb test..."
+          python3 mongodb_test.py
