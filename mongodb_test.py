@@ -3,21 +3,26 @@ import time
 from pymongo import MongoClient
 from dotenv import load_dotenv
 
-if (
-    os.environ.get("GITHUB_ACTIONS") is None
-    or os.environ.get("GITHUB_ACTIONS") is not False
-):
+if os.environ.get("GITHUB_ACTIONS") is None:
     load_dotenv()
 
 PORT = os.environ.get("MONGODB_PORT")
 HOST = os.environ.get("MONGODB_HOST")
+MONGO_URI = None
+USERNAME = None
+PASSWORD = None
+
+if os.environ.get("GITHUB_ACTIONS") is None:
+    MONGO_URI = f"mongodb://{HOST}:{PORT}/ghActionsTest"
+else:
+    USERNAME = os.environ.get("MONGODB_INITDB_ROOT_USERNAME")
+    PASSWORD = os.environ.get("MONGODB_INITDB_ROOT_PASSWORD")
+    MONGO_URI = f"mongodb://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/ghActionsTest"
 
 # Generating the client
 print("\033[32m# Generating the client...\033[0m")  # Cyan comment
 time.sleep(1)
-client = MongoClient(
-    f"mongodb://{HOST}:{PORT}/ghActionsTest", serverSelectionTimeoutMS=5000
-)
+client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
 db = client.ghActionsTest
 collection = db.exampleCollection
 document = {"someKey": "someVal"}
