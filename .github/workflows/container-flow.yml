@@ -43,7 +43,7 @@ jobs:
         # Opens tcp port 6379 on the host and service container
         ports:
           - 6379:6379
-        options: --entrypoint redis-server
+#        options: --entrypoint redis-server
       mongodb:
         # https://www.mongodb.com/compatibility/docker
         image: mongo

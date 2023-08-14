@@ -1,5 +1,8 @@
 FROM python:3.11
 
+# NOTE: Set the environment variable like this
+# ENV VARIABLE VALUE
+
 COPY . /mnt/locust
 #COPY ../requirements.txt /mnt/locust
 

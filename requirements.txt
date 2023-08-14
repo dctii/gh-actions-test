@@ -27,3 +27,5 @@ Werkzeug==2.3.6
 zope.event==5.0
 zope.interface==6.0
 python-dotenv==1.0.0
+redis~=4.6.0
+pymongo~=4.4.1
