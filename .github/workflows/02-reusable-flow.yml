@@ -18,7 +18,7 @@
         # Download artifacts
         - name: Get artifacts
           # needs.<JOB_NAME>.steps.<STEP_ID>.outcome
-          if: default != ''
+          if: inputs.artifact-name != ''
           uses: actions/download-artifact@v3
           with:
             name: ${{ inputs.artifact-name }}

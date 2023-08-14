@@ -149,7 +149,6 @@ jobs:
     needs: first-job
     uses: ./.github/workflows/02-reusable-flow.yml
     with:
-      # Sends input as key-value pair to reusable workflow
       artifact-name: locust-output-files
 
   third-job:
