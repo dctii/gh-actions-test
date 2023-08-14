@@ -153,14 +153,20 @@ jobs:
       # Will send a key-value pair to the reusable workflow '02-reusable-flow.yml'
       artifact-name: locust-output-files
     secrets:
+      # Passes secret value to next workflow
       little-secret: 'this-is-a-little-secret'
 
   third-job:
     needs: second-job
     runs-on: self-hosted
     steps:
-      - name: I am finished
-        run: echo "I am finished."
+      # Echo outputs from 'test' job
+      - name: Echo outputs from first-job
+        run: |
+          echo "${{ needs.test.outputs.script-file }}"
+          echo "${{ needs.test.outputs.png-file }}"
+          echo "${{ needs.test.outputs.UPLOAD_ARTIFACTS }}"
+          echo "${{ needs.test.steps.upload_step.outcome }}"
 
   fourth-job:
     needs: third-job

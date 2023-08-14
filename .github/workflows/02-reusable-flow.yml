@@ -27,6 +27,7 @@
         - name: List logs and tell me a little secret
           run: | 
             ls ./logfiles
+            # Uses little-secret passed from previous workflow
             echo "${{ secrets.little-secret }}"
 #
 #        # Echo outputs from 'test' job
