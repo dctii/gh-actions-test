@@ -18,7 +18,7 @@ jobs:
       UPLOAD_ARTIFACTS: ${{ steps.publish.outputs.UPLOAD_ARTIFACTS }}
     env:
       DEBUG: false
-      UPLOAD_ARTIFACTS: false
+      UPLOAD_ARTIFACTS: true
       SELF_HOSTED: true
     steps:
       - name: Print some values
