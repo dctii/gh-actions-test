@@ -17,6 +17,8 @@ if os.environ.get("GITHUB_ACTIONS") is None:
 else:
     USERNAME = os.environ.get("MONGODB_INITDB_ROOT_USERNAME")
     PASSWORD = os.environ.get("MONGODB_INITDB_ROOT_PASSWORD")
+    print(USERNAME)
+    print(PASSWORD)
     MONGO_URI = f"mongodb://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/admin"
 
 # Generating the client
