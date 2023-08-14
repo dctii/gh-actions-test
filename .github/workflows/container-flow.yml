@@ -112,7 +112,7 @@ jobs:
 
     # NOTE:
       - name: Talk to MongoDB
-        id: redis-comm
+        id: mongodb-comm
         run: |
           echo "Running mongodb test..."
           python3 mongodb_test.py
