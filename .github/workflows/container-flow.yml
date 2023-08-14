@@ -32,7 +32,7 @@ jobs:
       # NOTE: Can use services without a container!
       env:
         REDIS_HOST: 127.0.0.1
-        REDIS_PORT: 6739
+        REDIS_PORT: 6379
         MONGODB_HOST: 127.0.0.1
         MONGODB_PORT: 27017
     services:
