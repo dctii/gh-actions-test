@@ -37,8 +37,8 @@ jobs:
         REDIS_PORT: 6379
         MONGODB_HOST: mongodb
         MONGODB_PORT: 27017
-        MONGO_INITDB_ROOT_USERNAME: root
-        MONGO_INITDB_ROOT_PASSWORD: example
+        MONGO_USER: root
+        MONGO_PASS: example
     services:
       # Label used to access the service container
       redis:
@@ -52,6 +52,9 @@ jobs:
         image: mongo
         ports:
           - 27017:27017
+        env:
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: example
 
 
     steps:

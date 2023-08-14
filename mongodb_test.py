@@ -9,14 +9,20 @@ if os.environ.get("GITHUB_ACTIONS") is None:
 PORT = os.environ.get("MONGODB_PORT")
 HOST = os.environ.get("MONGODB_HOST")
 MONGO_URI = None
+USERNAME = None
+PASSWORD = None
 
 print("GITHUB_ACTIONS VALUE: ")
 print(os.environ.get("GITHUB_ACTIONS"))
 
 if os.environ.get("GITHUB_ACTIONS") is None:
-    MONGO_URI = f"mongodb://{HOST}:{PORT}/ghActionsTest"
+    MONGO_URI = f"mongodb://{HOST}:{PORT}/admin"
 else:
-    MONGO_URI = f"mongodb://root:example@{HOST}:{PORT}/admin"
+    USERNAME = os.environ.get("MONGODB_INITDB_ROOT_USERNAME")
+    PASSWORD = os.environ.get("MONGODB_INITDB_ROOT_PASSWORD")
+    print(USERNAME)
+    print(PASSWORD)
+    MONGO_URI = f"mongodb://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/admin"
 
 # Generating the client
 print("\033[32m# Generating the client...\033[0m")  # Cyan comment
