@@ -112,6 +112,7 @@ jobs:
         id: redis-comm
         run: |
           . .venv/bin/activate
+          pip3 install redis
           echo "Running redis test..."
           python3 redis_test.py
 
@@ -121,5 +122,6 @@ jobs:
         id: mongodb-comm
         run: |
           . .venv/bin/activate
+          pip3 install pymongo
           echo "Running mongodb test..."
           python3 mongodb_test.py
