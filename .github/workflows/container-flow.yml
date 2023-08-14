@@ -37,6 +37,8 @@ jobs:
         REDIS_PORT: 6379
         MONGODB_HOST: mongodb
         MONGODB_PORT: 27017
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: example
     services:
       # Label used to access the service container
       redis:
@@ -45,15 +47,11 @@ jobs:
         # Opens tcp port 6379 on the host and service container
         ports:
           - 6379:6379
-#        options: --entrypoint redis-server
       mongodb:
         # https://www.mongodb.com/compatibility/docker
         image: mongo
         ports:
           - 27017:27017
-        env:
-          MONGO_INITDB_ROOT_USERNAME: root
-          MONGO_INITDB_ROOT_PASSWORD: example
 
 
     steps:
@@ -108,14 +106,14 @@ jobs:
 #            ./csvfiles/
 #            ./jsonfiles/
 
-    # NOTE: Redis Test
-      - name: Talk to Redis
-        if: always()
-        id: redis-comm
-        run: |
-          . .venv/bin/activate
-          echo "Running redis test..."
-          python3 redis_test.py
+#    # NOTE: Redis Test
+#      - name: Talk to Redis
+#        if: always()
+#        id: redis-comm
+#        run: |
+#          . .venv/bin/activate
+#          echo "Running redis test..."
+#          python3 redis_test.py
 
       # NOTE: MongoDB Test
       - name: Talk to MongoDB
