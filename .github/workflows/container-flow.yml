@@ -107,7 +107,7 @@ jobs:
       - name: Talk to Redis
         id: redis-comm
         run: |
-          echo "Running redis test...
+          echo "Running redis test..."
           python3 redis_test.py
 
     # NOTE:
