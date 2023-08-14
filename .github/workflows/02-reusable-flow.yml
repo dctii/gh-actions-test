@@ -1,23 +1,26 @@
   name: 02-Reusable_Flow
   on:
+    # NOTE: Use workflow_call so that this can be called a reusable-workflow
     workflow_call:
       inputs:
-        # Take input from workflow that calls this reusable workflow
+        # NOTE: Take input from origin workflow
         artifact-name:
           type: string
           description: The name of the locust output file
           required: true
+        # NOTE: Take secret from origin workflow
       secrets:
         little-secret:
           required: true
       outputs:
         result:
           description: The result of the second-job operation
-          # Value is taken from the steps of the job
+          # NOTE: Value is taken from the steps of the job below
           value: ${{ jobs.second-job.outputs.outcome }}
   jobs:
     second-job:
       outputs:
+        # NOTE: Set the value of 'outcome' that will be output to for the origin workflow
         outcome: ${{ steps.set-result.outputs.step-result }}
       runs-on: self-hosted
       steps:
@@ -29,24 +32,16 @@
           # needs.<JOB_NAME>.steps.<STEP_ID>.outcome
           uses: actions/download-artifact@v3
           with:
+            # NOTE: Get input from origin workflow using this workflow
             name: ${{ inputs.artifact-name }}
 
+        # NOTE: Uses little-secret passed from origin workflow
         - name: List logs and tell me a little secret
           run: | 
             ls ./logfiles
-            # Uses little-secret passed from previous workflow
             echo "${{ secrets.little-secret }}"
 
         - name: Set result output
+          # NOTE: Set ID and then assign the output name
           id: set-result
           run: echo "step-result=success" >> $GITHUB_OUTPUT
-#
-#        # Echo outputs from 'test' job
-#        - name: Output filename
-#          run: |
-#            echo "${{ needs.test.outputs.script-file }}"
-#            echo "${{ needs.test.outputs.png-file }}"
-#            echo "${{ needs.test.outputs.UPLOAD_ARTIFACTS }}"
-#            echo "${{ needs.test.steps.upload_step.outcome }}"
-
-  # We want to run this workflow within another workflow. This is why it is called a 'reusable workflow'

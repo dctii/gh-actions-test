@@ -12,7 +12,7 @@ jobs:
   first-job:
 #    runs-on: ubuntu-latest
     runs-on: self-hosted
-    outputs: # add identifiers by which you can access the output value
+    outputs: # NOTE: add identifiers by which you can access the output value
       script-file: ${{ steps.publish.outputs.script-file }}
       png-file: ${{ steps.publish.outputs.png-file }}
       UPLOAD_ARTIFACTS: ${{ steps.publish.outputs.UPLOAD_ARTIFACTS }}
@@ -134,7 +134,7 @@ jobs:
             ./jsonfiles/
 
 
-      # Publish outputs
+      # NOTE: Publish outputs
       - name: Publish outputs
         id: publish
         run: |
@@ -150,31 +150,33 @@ jobs:
     needs: first-job
     uses: ./.github/workflows/02-reusable-flow.yml
     with:
-      # Will send a key-value pair to the reusable workflow '02-reusable-flow.yml'
+      # NOTE: Will send a key-value pair to the reusable workflow '02-reusable-flow.yml'
       artifact-name: locust-output-files
     secrets:
-      # Passes secret value to next workflow
+      # NOTE: Passes secret value to next workflow
       little-secret: 'this-is-a-little-secret'
 
+  # NOTE: Testing outputs from foreign job
   print-second-job-result:
     needs: second-job
     runs-on: self-hosted
     steps:
       - name: Print second-job output
+        # NOTE: Get the output from the second-job workflow
         run: echo "${{ needs.second-job.outputs.result }}"
 
-
+  # NOTE: Testing outputs from native job
   third-job:
     needs: second-job
     runs-on: self-hosted
     steps:
-      # Echo outputs from 'test' job
+      # NOTE: Echo outputs from 'first-job' job
       - name: Echo outputs from first-job
         run: |
-          echo "${{ needs.test.outputs.script-file }}"
-          echo "${{ needs.test.outputs.png-file }}"
-          echo "${{ needs.test.outputs.UPLOAD_ARTIFACTS }}"
-          echo "${{ needs.test.steps.upload_step.outcome }}"
+          echo "${{ needs.first-job.outputs.script-file }}"
+          echo "${{ needs.first-job.outputs.png-file }}"
+          echo "${{ needs.first-job.outputs.UPLOAD_ARTIFACTS }}"
+          echo "${{ needs.first-job.steps.upload_step.outcome }}"
 
   fourth-job:
     needs: third-job
@@ -183,6 +185,7 @@ jobs:
       - name: Say hello
         run: echo "Hello!"
 
+  # NOTE: Testing native 'if' functions success(), failure(), cancelled(), always()
   fifth-job:
     needs: [second-job, third-job]
     runs-on: self-hosted
@@ -204,6 +207,7 @@ jobs:
         if: always()
         run: echo "This was ran because it will always run no matter what."
 
+  # NOTE: Testing matrix jobs -- run multiple job configurations in parallel, add or remove individual combos, can control whether a single failing job should cancel all other matrix jobs w continue-on-error
   sixth-job:
     needs: [fourth-job, fifth-job]
     runs-on: self-hosted

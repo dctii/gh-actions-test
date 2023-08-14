@@ -1,0 +1,14 @@
+Docker
+- packages that contain code + its execution environment
+- advantage: reproducible execution env and results
+- guarantee it always runs the same way even if on different operating systems
+- for example, run windows on an ubuntu-latest server
+
+Why use the container over the runner?
+- CONTAINER
+    - full control over environment & installed software
+
+- RUNNER
+    - choose from list of pre-defined environments (incl. installed software)
+    - steps execute inside the container
+    - can create "Services": utility containers used by your steps
