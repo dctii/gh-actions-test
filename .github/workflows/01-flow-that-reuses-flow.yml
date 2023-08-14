@@ -150,7 +150,12 @@ jobs:
     needs: first-job
     uses: ./.github/workflows/02-reusable-flow.yml
     with:
+      # Will send a key-value pair to the reusable workflow '02-reusable-flow.yml'
       artifact-name: locust-output-files
+    # secrets go here
+    secrets:
+      MY_NEW_SECRET:
+        required: true
 
   third-job:
     needs: second-job

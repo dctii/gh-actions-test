@@ -7,6 +7,9 @@
           type: string
           description: The name of the locust output file
           required: true
+      secrets:
+        MY_NEW_SECRET:
+          required: true
   jobs:
     second-job:
       runs-on: self-hosted
@@ -17,7 +20,7 @@
         # Download artifacts
         - name: Get artifacts
           # needs.<JOB_NAME>.steps.<STEP_ID>.outcome
-          if: inputs.artifact-name != ''
+          if: secrets.MY_NEW_SECRET == 'your-secret-goes-here'
           uses: actions/download-artifact@v3
           with:
             name: ${{ inputs.artifact-name }}
