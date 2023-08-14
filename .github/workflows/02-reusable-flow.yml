@@ -8,7 +8,7 @@
           description: The name of the locust output file
           required: true
       secrets:
-        little_secret:
+        little-secret:
           required: true
   jobs:
     second-job:
@@ -27,7 +27,7 @@
         - name: List logs and tell me a little secret
           run: | 
             ls ./logfiles
-            echo "${{ secrets.little_secret }}"
+            echo "${{ secrets.little-secret }}"
 #
 #        # Echo outputs from 'test' job
 #        - name: Output filename

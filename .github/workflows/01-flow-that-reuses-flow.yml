@@ -153,7 +153,7 @@ jobs:
       # Will send a key-value pair to the reusable workflow '02-reusable-flow.yml'
       artifact-name: locust-output-files
     secrets:
-      little_secret: 'this-is-a-little-secret'
+      little-secret: 'this-is-a-little-secret'
 
   third-job:
     needs: second-job
