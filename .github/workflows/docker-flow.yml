@@ -69,7 +69,6 @@ jobs:
     # Upload artifacts
       - name: Upload artifacts
         id: upload_step
-        if: env.UPLOAD_ARTIFACTS == 'true'
         uses: actions/upload-artifact@v3
         with:
           name: locust-output-files
