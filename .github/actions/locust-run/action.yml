@@ -51,8 +51,8 @@ runs:
           --exit-code-on-error 1 \
           --only-summary | awk '/\[/{flag=1} flag; /\]/{flag=0; print}' > $JSON_DIR/$(echo $CURR_TIME).json
         
-        echo "JSON_DIR=$JSON_DIR" >> $GITHUB_OUTPUTS
-        echo "CURR_TIME=$CURR_TIME" >> $GITHUB_OUTPUTS
+        echo "JSON_DIR=$JSON_DIR" >> $GITHUB_OUTPUT
+        echo "CURR_TIME=$CURR_TIME" >> $GITHUB_OUTPUT
         
         unset CURR_TIME LOG_DIR HTML_DIR CSV_DIR JSON_DIR
 
