@@ -40,7 +40,7 @@ jobs:
           run-time: 5s
 
       - name: Check if JSON cleaned
-        run: echo "JSON was cleaned? ${{ steps.locust-run.outputs.json-cleaned }}"
+        run: echo "JSON was cleaned? ${{ steps.locust-run.outputs.json-cleaning }}"
 
       # List files
       - name: Check if new files have been produced

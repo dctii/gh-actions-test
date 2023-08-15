@@ -15,7 +15,7 @@ inputs:
     required: false
     default: '60s'
 outputs:
-  json-cleaned:
+  json-cleaning:
     description: "Whether the JSON is in a valid format or not now"
     value: ${{ steps.json-cleaner.outputs.json-cleaned }}
 
