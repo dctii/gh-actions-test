@@ -68,15 +68,15 @@ runs:
           sed -i '$d' $JSON_DIR/$(echo $CURR_TIME).json
           if ! jq '.' $JSON_DIR/$(echo $CURR_TIME).json 2>/dev/null; then
             echo -e "${BLUE}JSON still invalid!${RESET}"
-            echo "::set-output name=json-cleaned::false"
+            echo "json-cleaned='false'" >> $GITHUB_OUTPUT
             exit 1
           else
             echo -e "${BLUE}JSON is valid.${RESET}"
-            echo "::set-output name=json-cleaned::true"
+            echo "json-cleaned='true'" >> $GITHUB_OUTPUT
           fi
         else
           echo -e "${BLUE}JSON is valid.${RESET}"
-          echo "::set-output name=json-cleaned::true"
+          echo "json-cleaned='true'" >> $GITHUB_OUTPUT
         fi
 
       continue-on-error: true
