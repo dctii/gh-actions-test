@@ -36,8 +36,7 @@ runs:
 
         mkdir -p $LOG_DIR $HTML_DIR $CSV_DIR $JSON_DIR
 
-        echo "JSON_DIR=$JSON_DIR" >> $GITHUB_ENV
-        echo "CURR_TIME=$CURR_TIME" >> $GITHUB_ENV
+
 
         locust \
           -f ${{ inputs.locustfile }} \
@@ -51,8 +50,11 @@ runs:
           --json \
           --exit-code-on-error 1 \
           --only-summary | awk '/\[/{flag=1} flag; /\]/{flag=0; print}' > $JSON_DIR/$(echo $CURR_TIME).json
-
-        unset CURR_TIME LOG_DIR HTML_DIR CSV_DIR
+        
+        echo "JSON_DIR=$JSON_DIR" >> $GITHUB_OUTPUTS
+        echo "CURR_TIME=$CURR_TIME" >> $GITHUB_OUTPUTS
+        
+        unset CURR_TIME LOG_DIR HTML_DIR CSV_DIR JSON_DIR
 
     # Clean JSON Data
     - name: Clean locust output JSON data
@@ -62,6 +64,8 @@ runs:
         source .venv/bin/activate
         BLUE="\033[34m"
         RESET="\033[0m"
+        JSON_DIR="${{ steps.locust-runner.outputs.JSON_DIR }}"
+        CURR_TIME="${{ steps.locust-runner.outputs.CURR_TIME }}"
         
         if ! jq '.' $JSON_DIR/$(echo $CURR_TIME).json 2>/dev/null; then
           echo -e "${BLUE}Invalid JSON detected!${RESET}"
@@ -78,5 +82,7 @@ runs:
           echo -e "${BLUE}JSON is valid.${RESET}"
           echo "json-cleaned='true'" >> $GITHUB_OUTPUT
         fi
+        
+        unset BLUE RESET JSON_DIR
 
       continue-on-error: true
