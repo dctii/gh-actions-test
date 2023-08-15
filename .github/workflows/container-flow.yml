@@ -62,19 +62,16 @@ jobs:
       # NOTE: Locust Tests
       - name: Run locust tests
         run: |
-          chmod +x ./.github/scripts/setup_pyvenv.sh
-          ./.github/scripts/setup_pyvenv.sh
+          chmod +x ./.github/scripts/setup_pyvenv.sh && \
+            ./.github/scripts/setup_pyvenv.sh
           
-          CURR_TIME=$(date +%Y-%m-%d_%Hh-%Mm-%Ss)
-          LOG_DIR="./logfiles"
-          HTML_DIR="./htmlfiles"
-          CSV_DIR="./csvfiles/$CURR_TIME"
-          JSON_DIR="./jsonfiles/$CURR_TIME"
+          CURR_TIME=$(date +%Y-%m-%d_%Hh-%Mm-%Ss) && \
+            LOG_DIR="./logfiles" && \
+            HTML_DIR="./htmlfiles" && \
+            CSV_DIR="./csvfiles/$CURR_TIME" && \
+            JSON_DIR="./jsonfiles/$CURR_TIME"
 
           mkdir -p $LOG_DIR $HTML_DIR $CSV_DIR $JSON_DIR
-
-          echo "JSON_PATH=./jsonfiles/$CURR_TIME" >> $GITHUB_ENV
-          echo "CURR_TIME=$CURR_TIME" >> $GITHUB_ENV
 
           locust \
             -f locustfiles/test.py \
@@ -89,34 +86,34 @@ jobs:
             --exit-code-on-error 1 \
             --only-summary | awk '/\[/{flag=1} flag; /\]/{flag=0; print}' > $JSON_DIR/$(echo $CURR_TIME).json
 
-          unset CURR_TIME LOG_DIR HTML_DIR CSV_DIR
+          unset CURR_TIME LOG_DIR HTML_DIR CSV_DIR JSON_DIR
 
-#    # NOTE: Upload artifacts
-#      - name: Upload artifacts
-#        id: upload_step
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: locust-output-files
-#          path: |
-#            ./logfiles/
-#            ./htmlfiles/
-#            ./csvfiles/
-#            ./jsonfiles/
-#
-#    # NOTE: Redis Test
-#      - name: Talk to Redis
-#        if: always()
-#        id: redis-comm
-#        run: |
-#          . .venv/bin/activate
-#          echo "Running redis test..."
-#          python3 redis_test.py
-#
-#      # NOTE: MongoDB Test
-#      - name: Talk to MongoDB
-#        if: always()
-#        id: mongodb-comm
-#        run: |
-#          . .venv/bin/activate
-#          echo "Running mongodb test..."
-#          python3 mongodb_test.py
+    # NOTE: Upload artifacts
+      - name: Upload artifacts
+        id: upload_step
+        uses: actions/upload-artifact@v3
+        with:
+          name: locust-output-files
+          path: |
+            ./logfiles/
+            ./htmlfiles/
+            ./csvfiles/
+            ./jsonfiles/
+
+    # NOTE: Redis Test
+      - name: Talk to Redis
+        if: always()
+        id: redis-comm
+        run: |
+          . .venv/bin/activate
+          echo "Running redis test..."
+          python3 redis_test.py
+
+      # NOTE: MongoDB Test
+      - name: Talk to MongoDB
+        if: always()
+        id: mongodb-comm
+        run: |
+          . .venv/bin/activate
+          echo "Running mongodb test..."
+          python3 mongodb_test.py
