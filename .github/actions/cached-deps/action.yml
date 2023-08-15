@@ -1,0 +1,19 @@
+# A file that contains the configuration and definition of that action
+# Must be part of any action you create, must be part of a repository that holds an action you might create
+name: 'Get & Cache Dependencies'
+description: 'Get the pypi dependencies and cache them'
+runs:
+  # Tell GitHub this is a composite action
+  using: 'composite'
+  steps:
+    - name: Cache dependencies
+      id: cache
+      uses: actions/cache@v3
+      with:
+        path: node_modules
+        key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+    - name: Install dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm ci
+      # Must add with custom composite action and run key
+      shell: bash

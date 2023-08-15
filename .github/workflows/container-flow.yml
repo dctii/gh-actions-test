@@ -7,25 +7,23 @@ on:
     paths: # if activity in this folder or file, permitted. paths-ignore is the opposite
       - '.github/workflows/container-flow.yml'
 jobs:
-#  testing-one:
-#    runs-on: ubuntu-latest
-#    env:
-#      DISABLE: True
-#    steps:
-#      - name: Get code
-#        uses: actions/checkout@v3
-#
-#      - name: Set up QEMU
-#        uses: docker/setup-qemu-action@v2
-#
-#      - name: Set up Docker Buildx
-#        uses: docker/setup-buildx-action@v2
-#
-#      - name: Build Docker image
-#        run: docker build -t my-locust-image -f ./Dockerfile .
-#
-#      - name: Start Docker Compose
-#        run: docker compose -f ./docker-compose.yml up --no-build
+  testing-one:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        run: docker build -t my-locust-image -f ./Dockerfile .
+
+      - name: Start Docker Compose
+        run: docker compose -f ./docker-compose.yml up --no-build
 
   testing-two:
     runs-on: ubuntu-latest
@@ -78,7 +76,7 @@ jobs:
           mkdir -p $HTML_DIR
           mkdir -p $CSV_DIR
           mkdir -p $JSON_DIR
-w
+
           echo "JSON_PATH=./jsonfiles/$CURR_TIME" >> $GITHUB_ENV
           echo "CURR_TIME=$CURR_TIME" >> $GITHUB_ENV
 
