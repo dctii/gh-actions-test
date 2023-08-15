@@ -25,6 +25,9 @@ jobs:
       # Execute composite action
       - name: 'Set up Python Execution Environment'
         uses: ./.github/actions/py-setup
+        with:
+          python-version: '3.11'
+          caching: 'true'
 
       # Run locust test and output results
       - name: Run locust test

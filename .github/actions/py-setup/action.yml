@@ -2,16 +2,37 @@
 # Must be part of any action you create, must be part of a repository that holds an action you might create
 name: 'Set up Python Execution Environment'
 description: 'Set up Python and install dependencies and cache them'
+inputs:
+  python-version:
+    description: "Which python version to set up with"
+    required: true
+    default: '3.10'
+  caching:
+    description: 'Whether to cache dependencies or not'
+    required: true
+    default: 'false'
 runs:
   # Tell GitHub this is a composite action
   using: 'composite'
   steps:
+      - name: Echo python version to use
+        run: |
+          echo "${{ inputs.python-version }}"
+        shell: bash
+        
       # Set up python
-      - name: Set up python
+      - name: Set up python and cache pip
+        if: inputs.caching == 'true'
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: ${{ inputs.python-version }}
           cache: 'pip'
+
+      - name: Set up python without cache pip
+        if: inputs.caching == 'false'
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ inputs.python-version }}
 
       # Install python dependencies
       - name: Install dependencies
