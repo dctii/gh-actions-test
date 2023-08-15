@@ -1,0 +1,27 @@
+# A file that contains the configuration and definition of that action
+# Must be part of any action you create, must be part of a repository that holds an action you might create
+name: 'Set up Python Execution Environment'
+description: 'Get code, the pypi dependencies and cache them'
+runs:
+  # Tell GitHub this is a composite action
+  using: 'composite'
+  steps:
+    # Get code from repo
+      - name: Get code
+        uses: actions/checkout@v3
+
+      # Set up python
+      - name: Set up python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      # Install python dependencies
+      - name: Install dependencies
+        run: |
+          python3 -m venv .venv
+          source .venv/bin/activate
+          pip install --upgrade pip setuptools wheel
+          pip install -r requirements.txt
+        shell: bash
