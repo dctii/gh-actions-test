@@ -31,6 +31,7 @@ jobs:
 
       # Run locust test and output results
       - name: Run locust test
+        id: locust-run
         uses: ./.github/actions/locust-run
         with:
           locustfile: ./locustfiles/test.py
@@ -38,33 +39,8 @@ jobs:
           spawn-rate: 5
           run-time: 5s
 
-#        run: |
-#          source .venv/bin/activate
-#          CURR_TIME=$(date +%Y-%m-%d_%Hh-%Mm-%Ss)
-#          LOG_DIR="./logfiles"
-#          HTML_DIR="./htmlfiles"
-#          CSV_DIR="./csvfiles/$CURR_TIME"
-#          JSON_DIR="./jsonfiles/$CURR_TIME"
-#
-#          mkdir -p $LOG_DIR $HTML_DIR $CSV_DIR $JSON_DIR
-#
-#          echo "JSON_PATH=./jsonfiles/$CURR_TIME" >> $GITHUB_ENV
-#          echo "CURR_TIME=$CURR_TIME" >> $GITHUB_ENV
-#
-#          locust \
-#            -f locustfiles/test.py \
-#            --users 25 \
-#            --spawn-rate 5 \
-#            --run-time 5s \
-#            --headless \
-#            --logfile $LOG_DIR/$(echo $CURR_TIME)_mylog.log --loglevel INFO \
-#            --html $HTML_DIR/$(echo $CURR_TIME)_myhtml.html \
-#            --csv $CSV_DIR/$(echo $CURR_TIME) --csv-full-history \
-#            --json \
-#            --exit-code-on-error 1 \
-#            --only-summary | awk '/\[/{flag=1} flag; /\]/{flag=0; print}' > $JSON_DIR/$(echo $CURR_TIME).json
-#
-#          unset CURR_TIME LOG_DIR HTML_DIR CSV_DIR JSON_DIR
+      - name: Check if JSON cleaned
+        run: echo "JSON was cleaned? ${{ steps.locust-run.outputs.json-cleaned }}
 
       # List files
       - name: Check if new files have been produced
