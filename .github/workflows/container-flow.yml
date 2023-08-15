@@ -62,6 +62,7 @@ jobs:
       # NOTE: Locust Tests
       - name: Run locust tests
         run: |
+          chmod +x ./.github/scripts/setup_pyvenv.sh
           ./.github/scripts/setup_pyvenv.sh
           
           CURR_TIME=$(date +%Y-%m-%d_%Hh-%Mm-%Ss)
