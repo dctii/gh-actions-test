@@ -34,27 +34,27 @@ jobs:
       # NOTE: Can use services without a container!
       env:
         REDIS_HOST: redis
-        REDIS_PORT: 6379
+        REDIS_PORT: ${{ secrets.REDIS_PORT }}
         MONGODB_HOST: mongodb
-        MONGODB_PORT: 27017
-        MONGO_USER: root
-        MONGO_PASS: example
+        MONGODB_PORT: ${{ secrets.MONGO_PORT }}
+        MONGO_USER: ${{ secrets.MONGO_USER }}
+        MONGO_PASS: ${{ secrets.MONGO_PASS }}
     services:
       # Label used to access the service container
       redis:
         # Docker Hub image
         image: redis
-        # Opens tcp port 6379 on the host and service container
+        # Opens tcp port <secret> on the host and service container
         ports:
-          - 6379:6379
+          - ${{ secrets.REDIS_PORT }}:${{ secrets.REDIS_PORT }}
       mongodb:
         # https://www.mongodb.com/compatibility/docker
         image: mongo
         ports:
-          - 27017:27017
+          - ${{ secrets.MONGO_PORT }}:${{ secrets.MONGO_PORT }}
         env:
-          MONGO_INITDB_ROOT_USERNAME: root
-          MONGO_INITDB_ROOT_PASSWORD: example
+          MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGO_USER }}
+          MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_PASS }}
 
 
     steps:

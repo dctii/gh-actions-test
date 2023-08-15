@@ -6,4 +6,14 @@ Why?
 - No existing community action
     - existing actions may not solve the specific problem you have in your workflow
     - maybe you want more control over the action
-    -
+
+- Different types of custom actions
+    - JavaScript Actions: execute JS file, uses JS (NodeJS and any packages)
+    - Docker actions:
+        - a containerized action - create Dockerfile with your required configuration
+        - Perform any task of your choice with any language
+        - Lots of flexibility but requires Docker knowledge
+    - Composite actions
+        - combine multiple Workflow steps in one single action
+        - combine run (commands) and uses (Actions)
+        - allows for reusing shared steps (without extra skills)
