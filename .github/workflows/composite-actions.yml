@@ -40,7 +40,7 @@ jobs:
           run-time: 5s
 
       - name: Check if JSON cleaned
-        run: echo "JSON was cleaned? ${{ steps.locust-run.outputs.json-cleaned }}
+        run: echo "JSON was cleaned? ${{ steps.locust-run.outputs.json-cleaned }}"
 
       # List files
       - name: Check if new files have been produced
@@ -66,29 +66,6 @@ jobs:
           # will create a hash of the file, diff key matches mean that changes had occurred to the file
           # can use this cache in different jobs and workflow cycles
           key: deps-node-modules-${{ hashFiles('**/*.log') }}
-
-      # Clean JSON Data
-      - name: Clean JSON data
-        run: |
-          source .venv/bin/activate
-          BLUE="\033[34m"
-          RESET="\033[0m"
-          
-          if ! jq '.' $JSON_PATH/$(echo $CURR_TIME).json 2>/dev/null; then
-            echo -e "${BLUE}Invalid JSON detected!${RESET}"
-            sed -i '$d' $JSON_PATH/$(echo $CURR_TIME).json
-            if ! jq '.' $JSON_PATH/$(echo $CURR_TIME).json 2>/dev/null; then
-              echo -e "${BLUE}JSON still invalid!${RESET}"
-              exit 1
-            else
-              echo -e "${BLUE}JSON is valid.${RESET}"
-            fi
-          else
-            echo -e "${BLUE}JSON is valid.${RESET}"
-          fi
-          
-          unset BLUE RESET
-        continue-on-error: true
 
     # Upload artifacts
       - name: Upload artifacts
