@@ -18,6 +18,10 @@ jobs:
     env:
       UPLOAD_ARTIFACTS: false
     steps:
+      # Get code from repo
+      - name: Get code
+        uses: actions/checkout@v3
+
       # Execute composite action
       - name: 'Set up Python Execution Environment'
         uses: ./.github/actions/py-setup
