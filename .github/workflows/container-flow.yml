@@ -68,55 +68,55 @@ jobs:
           . .venv/bin/activate
           pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
-#          CURR_TIME=$(date +%Y-%m-%d_%Hh-%Mm-%Ss)
-#          LOG_DIR="./logfiles"
-#          HTML_DIR="./htmlfiles"
-#          CSV_DIR="./csvfiles/$CURR_TIME"
-#          JSON_DIR="./jsonfiles/$CURR_TIME"
-#
-#          mkdir -p $LOG_DIR
-#          mkdir -p $HTML_DIR
-#          mkdir -p $CSV_DIR
-#          mkdir -p $JSON_DIR
-#w
-#          echo "JSON_PATH=./jsonfiles/$CURR_TIME" >> $GITHUB_ENV
-#          echo "CURR_TIME=$CURR_TIME" >> $GITHUB_ENV
-#
-#          locust \
-#            -f locustfiles/test.py \
-#            --users 25 \
-#            --spawn-rate 5 \
-#            --run-time 5s \
-#            --headless \
-#            --logfile $LOG_DIR/$(echo $CURR_TIME)_mylog.log --loglevel INFO \
-#            --html $HTML_DIR/$(echo $CURR_TIME)_myhtml.html \
-#            --csv $CSV_DIR/$(echo $CURR_TIME) --csv-full-history \
-#            --json \
-#            --exit-code-on-error 1 \
-#            --only-summary | awk '/\[/{flag=1} flag; /\]/{flag=0; print}' > $JSON_DIR/$(echo $CURR_TIME).json
-#
-#          unset CURR_TIME LOG_DIR HTML_DIR CSV_DIR
+          CURR_TIME=$(date +%Y-%m-%d_%Hh-%Mm-%Ss)
+          LOG_DIR="./logfiles"
+          HTML_DIR="./htmlfiles"
+          CSV_DIR="./csvfiles/$CURR_TIME"
+          JSON_DIR="./jsonfiles/$CURR_TIME"
 
-#    # NOTE: Upload artifacts
-#      - name: Upload artifacts
-#        id: upload_step
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: locust-output-files
-#          path: |
-#            ./logfiles/
-#            ./htmlfiles/
-#            ./csvfiles/
-#            ./jsonfiles/
+          mkdir -p $LOG_DIR
+          mkdir -p $HTML_DIR
+          mkdir -p $CSV_DIR
+          mkdir -p $JSON_DIR
+w
+          echo "JSON_PATH=./jsonfiles/$CURR_TIME" >> $GITHUB_ENV
+          echo "CURR_TIME=$CURR_TIME" >> $GITHUB_ENV
 
-#    # NOTE: Redis Test
-#      - name: Talk to Redis
-#        if: always()
-#        id: redis-comm
-#        run: |
-#          . .venv/bin/activate
-#          echo "Running redis test..."
-#          python3 redis_test.py
+          locust \
+            -f locustfiles/test.py \
+            --users 25 \
+            --spawn-rate 5 \
+            --run-time 5s \
+            --headless \
+            --logfile $LOG_DIR/$(echo $CURR_TIME)_mylog.log --loglevel INFO \
+            --html $HTML_DIR/$(echo $CURR_TIME)_myhtml.html \
+            --csv $CSV_DIR/$(echo $CURR_TIME) --csv-full-history \
+            --json \
+            --exit-code-on-error 1 \
+            --only-summary | awk '/\[/{flag=1} flag; /\]/{flag=0; print}' > $JSON_DIR/$(echo $CURR_TIME).json
+
+          unset CURR_TIME LOG_DIR HTML_DIR CSV_DIR
+
+    # NOTE: Upload artifacts
+      - name: Upload artifacts
+        id: upload_step
+        uses: actions/upload-artifact@v3
+        with:
+          name: locust-output-files
+          path: |
+            ./logfiles/
+            ./htmlfiles/
+            ./csvfiles/
+            ./jsonfiles/
+
+    # NOTE: Redis Test
+      - name: Talk to Redis
+        if: always()
+        id: redis-comm
+        run: |
+          . .venv/bin/activate
+          echo "Running redis test..."
+          python3 redis_test.py
 
       # NOTE: MongoDB Test
       - name: Talk to MongoDB
