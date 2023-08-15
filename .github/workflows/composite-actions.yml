@@ -31,58 +31,65 @@ jobs:
 
       # Run locust test and output results
       - name: Run locust test
-        run: |
-          source .venv/bin/activate
-          CURR_TIME=$(date +%Y-%m-%d_%Hh-%Mm-%Ss)
-          LOG_DIR="./logfiles"
-          HTML_DIR="./htmlfiles"
-          CSV_DIR="./csvfiles/$CURR_TIME"
-          JSON_DIR="./jsonfiles/$CURR_TIME"
-          
-          mkdir -p $LOG_DIR $HTML_DIR $CSV_DIR $JSON_DIR
-          
-          echo "JSON_PATH=./jsonfiles/$CURR_TIME" >> $GITHUB_ENV
-          echo "CURR_TIME=$CURR_TIME" >> $GITHUB_ENV
-          
-          locust \
-            -f locustfiles/test.py \
-            --users 25 \
-            --spawn-rate 5 \
-            --run-time 5s \
-            --headless \
-            --logfile $LOG_DIR/$(echo $CURR_TIME)_mylog.log --loglevel INFO \
-            --html $HTML_DIR/$(echo $CURR_TIME)_myhtml.html \
-            --csv $CSV_DIR/$(echo $CURR_TIME) --csv-full-history \
-            --json \
-            --exit-code-on-error 1 \
-            --only-summary | awk '/\[/{flag=1} flag; /\]/{flag=0; print}' > $JSON_DIR/$(echo $CURR_TIME).json
-          
-          unset CURR_TIME LOG_DIR HTML_DIR CSV_DIR JSON_DIR
+        uses: ./.github/actions/locust-run
+        with:
+          locustfile: ./locustfiles/test.py
+          users: 25
+          spawn-rate: 5
+          run-time: 5s
 
-#      # List files
-#      - name: Check if new files have been produced
 #        run: |
 #          source .venv/bin/activate
-#          echo "🌲 This is the root directory:"
-#          ls
-#          echo "📁 These are the logfiles:"
-#          ls ./logfiles
-#          echo "📁 These are the htmlfiles:"
-#          ls ./htmlfiles
-#          echo "📁 These are the csvfiles:"
-#          ls ./csvfiles
-#          echo "📁 These are the jsonfiles:"
-#          ls ./jsonfiles
+#          CURR_TIME=$(date +%Y-%m-%d_%Hh-%Mm-%Ss)
+#          LOG_DIR="./logfiles"
+#          HTML_DIR="./htmlfiles"
+#          CSV_DIR="./csvfiles/$CURR_TIME"
+#          JSON_DIR="./jsonfiles/$CURR_TIME"
+#
+#          mkdir -p $LOG_DIR $HTML_DIR $CSV_DIR $JSON_DIR
+#
+#          echo "JSON_PATH=./jsonfiles/$CURR_TIME" >> $GITHUB_ENV
+#          echo "CURR_TIME=$CURR_TIME" >> $GITHUB_ENV
+#
+#          locust \
+#            -f locustfiles/test.py \
+#            --users 25 \
+#            --spawn-rate 5 \
+#            --run-time 5s \
+#            --headless \
+#            --logfile $LOG_DIR/$(echo $CURR_TIME)_mylog.log --loglevel INFO \
+#            --html $HTML_DIR/$(echo $CURR_TIME)_myhtml.html \
+#            --csv $CSV_DIR/$(echo $CURR_TIME) --csv-full-history \
+#            --json \
+#            --exit-code-on-error 1 \
+#            --only-summary | awk '/\[/{flag=1} flag; /\]/{flag=0; print}' > $JSON_DIR/$(echo $CURR_TIME).json
+#
+#          unset CURR_TIME LOG_DIR HTML_DIR CSV_DIR JSON_DIR
 
-#      # Cache output files
-#      - name: Cache logfiles
-#        id: logfiles-cache
-#        uses: actions/cache@v3
-#        with:
-#          path: ./logfiles/
-#          # will create a hash of the file, diff key matches mean that changes had occurred to the file
-#          # can use this cache in different jobs and workflow cycles
-#          key: deps-node-modules-${{ hashFiles('**/*.log') }}
+      # List files
+      - name: Check if new files have been produced
+        run: |
+          source .venv/bin/activate
+          echo "🌲 This is the root directory:"
+          ls
+          echo "📁 These are the logfiles:"
+          ls ./logfiles
+          echo "📁 These are the htmlfiles:"
+          ls ./htmlfiles
+          echo "📁 These are the csvfiles:"
+          ls ./csvfiles
+          echo "📁 These are the jsonfiles:"
+          ls ./jsonfiles
+
+      # Cache output files
+      - name: Cache logfiles
+        id: logfiles-cache
+        uses: actions/cache@v3
+        with:
+          path: ./logfiles/
+          # will create a hash of the file, diff key matches mean that changes had occurred to the file
+          # can use this cache in different jobs and workflow cycles
+          key: deps-node-modules-${{ hashFiles('**/*.log') }}
 
       # Clean JSON Data
       - name: Clean JSON data

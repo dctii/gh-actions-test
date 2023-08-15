@@ -15,11 +15,6 @@ runs:
   # Tell GitHub this is a composite action
   using: 'composite'
   steps:
-      - name: Echo python version to use
-        run: |
-          echo "${{ inputs.python-version }}"
-        shell: bash
-        
       # Set up python
       - name: Set up python and cache pip
         if: inputs.caching == 'true'
@@ -36,9 +31,9 @@ runs:
 
       # Install python dependencies
       - name: Install dependencies
+        shell: bash
         run: |
           python3 -m venv .venv
           source .venv/bin/activate
           pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
-        shell: bash
