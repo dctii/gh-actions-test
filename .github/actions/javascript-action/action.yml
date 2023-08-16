@@ -3,11 +3,17 @@ name: 'JavaScript Action'
 description: 'Do something with JavaScript'
 inputs:
     # Input values can be used in JS code
-    name:
-        description: "The user's name"
+    locustfile:
+        description: "Locust file to run the test on"
         required: true
-    age:
-        description: "How old the user is"
+    users:
+        description: "How many users"
+        required: true
+    spawn-rate:
+        description: "How many users to hatch at a time"
+        required: true
+    run-time:
+        description: "How long to run for"
         required: true
 runs:
     using: 'node16'
