@@ -3,5 +3,5 @@ name: 'JavaScript Action'
 description: 'Do something with JavaScript'
 runs:
     using: 'node16'
-    pre: 'setup.js'
     main: 'main.js'
+#    pre: 'setup.js'
