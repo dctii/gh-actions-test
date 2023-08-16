@@ -1,0 +1,8 @@
+# npm install @actions/core @actions/github @actions/exec
+name: 'JavaScript Action'
+description: 'Do something with JavaScript'
+runs:
+    using: 'node16'
+    main: 'main.js'
+#    pre: 'setup.js'
+#    post: 'cleanup.js'
