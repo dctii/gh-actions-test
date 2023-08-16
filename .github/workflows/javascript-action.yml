@@ -1,0 +1,115 @@
+name: JavaScript Actions Test
+run-name: ${{ github.actor }} is testing out Custom Composite Actions 🚀
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths: # if activity in this folder or file, permitted. paths-ignore is the opposite
+      - '.github/workflows/javascript-actions.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    outputs: # add identifiers by which you can access the output value
+      script-file: ${{ steps.publish.outputs.script-file }}
+      png-file: ${{ steps.publish.outputs.png-file }}
+      UPLOAD_ARTIFACTS: ${{ steps.publish.outputs.UPLOAD_ARTIFACTS }}
+    env:
+      UPLOAD_ARTIFACTS: false
+    steps:
+      # Get code from repo
+      - name: Get code
+        uses: actions/checkout@v3
+
+      # NOTE: Working on JS action here
+      - name: Run custom javascript action
+        uses: ./.github/actions/javascript-action
+
+      # Execute composite action
+      - name: 'Set up Python Execution Environment'
+        uses: ./.github/actions/py-setup
+        with:
+          python-version: '3.11'
+          caching: 'true'
+
+      # Run locust test and output results
+      - name: Run locust test
+        id: locust-run
+        uses: ./.github/actions/locust-run
+        with:
+          locustfile: ./locustfiles/test.py
+          users: 1
+          spawn-rate: 1
+          run-time: 2s
+
+      - name: Check if JSON cleaned
+        run: echo "JSON was cleaned? ${{ steps.locust-run.outputs.json-cleaning }}"
+
+      # Cache output files
+      - name: Cache logfiles
+        id: logfiles-cache
+        uses: actions/cache@v3
+        with:
+          path: ./logfiles/
+          # will create a hash of the file, diff key matches mean that changes had occurred to the file
+          # can use this cache in different jobs and workflow cycles
+          key: deps-node-modules-${{ hashFiles('**/*.log') }}
+
+    # Upload artifacts
+      - name: Upload artifacts
+        id: upload_step
+        if: env.UPLOAD_ARTIFACTS == 'true'
+        uses: actions/upload-artifact@v3
+        with:
+          name: locust-output-files
+          path: |
+            ./logfiles/
+            ./htmlfiles/
+            ./csvfiles/
+            ./jsonfiles/
+
+#      # Publish outputs
+#      - name: Publish outputs
+#        id: publish
+#        run: |
+#          source .venv/bin/activate
+#          SCRIPT_FILE=$(find locustfiles/*.py -type f -print -quit) # Get the first .py file
+#          PNG_FILE=$(find images/*.png -type f -print -quit) # Get the first .png file
+#          echo "script-file=$SCRIPT_FILE" >> "$GITHUB_OUTPUT"
+#          echo "png-file=$PNG_FILE" >> "$GITHUB_OUTPUT"
+#          echo "UPLOAD_ARTIFACTS=$UPLOAD_ARTIFACTS" >> "$GITHUB_OUTPUT"
+
+
+#  deploy:
+#    needs: test
+##    runs-on: ubuntu-latest
+#    runs-on: self-hosted
+#    steps:
+#      # Download artifacts
+#      - name: Get artifacts
+#        if: needs.test.steps.upload_step.outcome == 'success'
+#        uses: actions/download-artifact@v3
+#        with:
+#          name: locust-output-files
+#
+#      # Cache output files
+#      - name: Cache logfiles
+#        id: logfiles-cache
+#        uses: actions/cache@v3
+#        with:
+#          path: ./logfiles/
+#          # will create a hash of the file, diff key matches mean that changes had occurred to the file
+#          # can use this cache in different jobs and workflow cycles
+#          key: deps-node-modules-${{ hashFiles('**/*.log') }}
+#
+#      - name: List logs
+#        run: ls ./logfiles
+#
+#      # Echo outputs from 'test' job
+#      - name: Output filename
+#        run: |
+#          echo "${{ needs.test.outputs.script-file }}"
+#          echo "${{ needs.test.outputs.png-file }}"
+#          echo "${{ needs.test.outputs.UPLOAD_ARTIFACTS }}"
+#          echo "${{ needs.test.steps.upload_step.outcome }}"
