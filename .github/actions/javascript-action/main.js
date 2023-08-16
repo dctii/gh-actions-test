@@ -1,5 +1,4 @@
 const { installDependencies } = require('./setup');
-const core = require("@actions/core");
 
 async function run() {
     try {
