@@ -25,6 +25,9 @@ jobs:
       # NOTE: Working on JS action here, need to use set up node so that it can execute
       - name: Run custom javascript action
         uses: ./.github/actions/javascript-action
+        with:
+          name: 'Dana'
+          age: '34'
 
       # Execute composite action
       - name: 'Set up Python Execution Environment'

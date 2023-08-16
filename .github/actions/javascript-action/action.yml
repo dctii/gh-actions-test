@@ -1,7 +1,14 @@
 # npm install @actions/core @actions/github @actions/exec
 name: 'JavaScript Action'
 description: 'Do something with JavaScript'
+inputs:
+    # Input values can be used in JS code
+    name:
+        description: "The user's name"
+        required: true
+    age:
+        description: "How old the user is"
+        required: true
 runs:
     using: 'node16'
     main: 'main.js'
-#    pre: 'setup.js'
