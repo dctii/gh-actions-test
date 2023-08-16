@@ -1,12 +1,12 @@
 name: JavaScript Actions Test
-run-name: ${{ github.actor }} is testing out Custom Composite Actions 🚀
+run-name: ${{ github.actor }} is testing out Custom JavaScript Action 🚀
 on:
   workflow_dispatch:
   push:
     branches:
       - main
     paths: # if activity in this folder or file, permitted. paths-ignore is the opposite
-      - '.github/workflows/javascript-actions.yml'
+      - '.github/workflows/javascript-action.yml'
 
 jobs:
   test:
@@ -22,7 +22,7 @@ jobs:
       - name: Get code
         uses: actions/checkout@v3
 
-      # NOTE: Working on JS action here
+      # NOTE: Working on JS action here, need to use set up node so that it can execute
       - name: Run custom javascript action
         uses: ./.github/actions/javascript-action
 
