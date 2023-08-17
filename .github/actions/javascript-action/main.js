@@ -1,5 +1,6 @@
 const fs = require('fs')
 const setup = require('./setup');
+const core = require("@actions/core");
 
 async function run() {
     try {
@@ -84,7 +85,6 @@ async function run() {
             try {
                 JSON.parse(rawData);
                 core.notice("JSON is valid.");
-                core.setOutput("json-cleaned", "true");
             } catch (error) {
                 core.notice("Invalid JSON detected!");
 
@@ -98,10 +98,8 @@ async function run() {
                     JSON.parse(rawData);
                     core.notice("JSON is valid after cleanup.");
                     jsonCleaned = true;
-                    core.setOutput("json-cleaned", "true");
                 } catch (error) {
                     core.error("JSON still invalid after cleanup!");
-                    core.setOutput("json-cleaned", "false");
                     core.setFailed("Invalid JSON data.");
                 }
             }
@@ -113,6 +111,9 @@ async function run() {
                 fs.writeFileSync(jsonFilePath, formattedJson, 'utf8');
             }
         }
+
+        if (jsonCleaned) core.setOutput("json-cleaned", true)
+        else core.setOutput("json-cleaned", false)
 
     } catch (error) {
         core.error(`Failed: ${error}`);
