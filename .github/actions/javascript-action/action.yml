@@ -15,6 +15,13 @@ inputs:
     run-time:
         description: "How long to run for"
         required: true
+outputs:
+    JSON_DIR:
+        description: 'Directory for the JSON output'
+    CURR_TIME:
+        description: 'The current time stamp that the locust test was run'
+    json-cleaned:
+        description: 'A boolean response of whether it has been cleaned or not.'
 runs:
     using: 'node16'
     main: 'main.js'
