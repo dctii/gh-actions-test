@@ -25,7 +25,10 @@ jobs:
         id: docker-runner
         uses: ./.github/actions/docker-action
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # NOTE: locustfile.py was created to conform to this docker action, slight mod on it with getting host input
           host: 'https://smallbra.in'
+          # NOTE: File was put in local so Dockerfile can grab it
           locustfile: 'locustfile.py'
           users: 2
           spawn-rate: 1

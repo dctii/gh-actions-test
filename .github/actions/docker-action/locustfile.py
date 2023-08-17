@@ -38,6 +38,7 @@ class MyTest(BaseTaskSet):
 
 class DesktopUser(HttpUser):
     wait_time = between(1, 12)
+    # NOTE: locustfile.py was created to conform to this docker action, slight mod on it with getting host input
     host = get_gh_input("host")
     tasks = [MyTest]
 
