@@ -22,8 +22,8 @@ def upload_to_github_artifact(file_name, token):
 
     # Define the URL for artifact creation
     run_id = os.environ["GITHUB_RUN_ID"]
-    repository = os.environ["GITHUB_REPOSITORY"].split("/")
-    url = f"https://api.github.com/repos/{repository}/actions/runs/{run_id}/artifacts"
+    owner, repo_name = os.environ["GITHUB_REPOSITORY"].split("/")
+    url = f"https://api.github.com/repos/{owner}/{repo_name}/actions/runs/{run_id}/artifacts"
 
     # Define the payload
     payload = {"name": "locust-output", "expired": "false"}
