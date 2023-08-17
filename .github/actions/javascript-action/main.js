@@ -1,14 +1,18 @@
 const fs = require('fs')
 const setup = require('./setup');
+const core = require("@actions/core");
 
 async function run() {
     try {
         await setup.installDependencies();
+    } catch (error) {
+        console.error(error)
+    }
 
-        // Now that the dependencies are installed, you can require them:
-        const core = require('@actions/core');
-        const exec = require('@actions/exec');
+    const core = require('@actions/core');
+    const exec = require('@actions/exec');
 
+    try {
         // Get input values
         const locustfile = core.getInput('locustfile', { required: true })
         const userCount = core.getInput('users', { required: true })
@@ -73,13 +77,13 @@ async function run() {
 
         // Clean up JSON
         const jsonFilePath = `${jsonDir}/${currTime}.json`;
+        let jsonCleaned = false;
         if (jsonStart !== -1 && jsonEnd !== -1) {
             const jsonOutput = output.slice(jsonStart, jsonEnd);
             fs.writeFileSync(jsonFilePath, jsonOutput, 'utf8');
 
             // Validate and clean JSON if necessary
             let rawData = fs.readFileSync(jsonFilePath, 'utf8');
-            let jsonCleaned = false;
 
             try {
                 JSON.parse(rawData);
