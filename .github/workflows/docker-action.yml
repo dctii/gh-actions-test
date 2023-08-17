@@ -25,6 +25,7 @@ jobs:
         id: docker-runner
         uses: ./.github/actions/docker-action
         with:
+          host: 'https://smallbra.in'
           locustfile: 'locustfile.py'
           users: 2
           spawn-rate: 1

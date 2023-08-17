@@ -2,6 +2,9 @@
 name: 'Docker Action'
 description: 'Do something with Docker'
 inputs:
+  host:
+    description: 'Host for locust to run off of'
+    required: true
   locustfile:
     description: 'Path to the locust file'
     required: true

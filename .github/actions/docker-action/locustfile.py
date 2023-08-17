@@ -1,12 +1,12 @@
 import os
-from dotenv import load_dotenv
-
 from locust.env import Environment
 from locust.user.users import HttpUser
 from locust.user.task import task, TaskSet
 from locust.user.wait_time import between
 
-load_dotenv()
+
+def get_gh_input(key):
+    return os.environ["INPUT_" + key.upper()]
 
 
 class BaseTaskSet(TaskSet):
@@ -38,7 +38,7 @@ class MyTest(BaseTaskSet):
 
 class DesktopUser(HttpUser):
     wait_time = between(1, 12)
-    host = os.getenv("HOST")
+    host = get_gh_input("host")
     tasks = [MyTest]
 
 
