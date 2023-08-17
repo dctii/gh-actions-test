@@ -7,6 +7,7 @@ on:
       - main
     paths: # if activity in this folder or file, permitted. paths-ignore is the opposite
       - '.github/workflows/javascript-action.yml'
+      - '.github/workflows/actions/javascript-action/main.js
 
 jobs:
   test:
