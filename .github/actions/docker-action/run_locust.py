@@ -68,7 +68,7 @@ def run():
         "--csv {csv_dir}/{curr_time} --csv-full-history "
         "--json "
         "--exit-code-on-error 1 "
-        "--only-summary | awk '/\\[/{flag=1} flag; /\\]/{flag=0; print}' > {json_dir}/{curr_time}.json"
+        "--only-summary | awk '/\\[/{{flag=1}} flag; /\\]/{{flag=0; print}}' > {json_dir}/{curr_time}.json"
     ).format(
         log_dir=log_dir,
         html_dir=html_dir,
