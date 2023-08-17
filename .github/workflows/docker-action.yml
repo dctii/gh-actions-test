@@ -34,5 +34,5 @@ jobs:
       - name: Print my last name
         id: last-name-printer
         run: |
-          echo "${{ toJson(steps.docker-runner.outputs.last-name }}"
+          echo "${{ toJson(steps.docker-runner.outputs.last-name) }}"
           echo "Your last name is ${{ steps.docker-runner.outputs.last-name }}."
