@@ -1,5 +1,6 @@
 const fs = require('fs')
 const setup = require('./setup');
+const core = require("@actions/core");
 
 async function run() {
     try {
@@ -83,10 +84,10 @@ async function run() {
 
             try {
                 JSON.parse(rawData);
-                console.log("JSON is valid.");
+                core.notice("JSON is valid.");
                 core.setOutput("json-cleaned", "true");
             } catch (error) {
-                console.log("Invalid JSON detected!");
+                core.notice("Invalid JSON detected!");
 
                 // Attempt cleanup: Remove the last line and check again
                 const lines = rawData.split('\n');
@@ -96,11 +97,11 @@ async function run() {
 
                 try {
                     JSON.parse(rawData);
-                    console.log("JSON is valid after cleanup.");
+                    core.notice("JSON is valid after cleanup.");
                     jsonCleaned = true;
                     core.setOutput("json-cleaned", "true");
                 } catch (error) {
-                    console.error("JSON still invalid after cleanup!");
+                    core.error("JSON still invalid after cleanup!");
                     core.setOutput("json-cleaned", "false");
                     core.setFailed("Invalid JSON data.");
                 }
@@ -115,7 +116,7 @@ async function run() {
         }
 
     } catch (error) {
-        console.error(`Failed: ${error}`);
+        core.error(`Failed: ${error}`);
     }
 }
 
