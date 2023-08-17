@@ -1,3 +1,4 @@
+# ./.github/workflows/docker-action.yml
 name: Docker Actions Test
 run-name: ${{ github.actor }} is testing out Custom Docker Action 🚀
 on:
@@ -24,11 +25,12 @@ jobs:
         id: docker-runner
         uses: ./.github/actions/docker-action
         with:
-          first-name: 'Dana'
-          age: '34'
+          locustfile: locustfile.py
+          users: 2
+          spawn-rate: 1
+          run-time: 2s
 
-      - name: Print my last name
-        id: last-name-printer
+      - name: Print the JSON_DIR and CURR_TIME outputs"
         run: |
-          echo "${{ toJson(steps.docker-runner.outputs.last-name) }}"
-          echo "Your last name is ${{ steps.docker-runner.outputs.last-name }}."
+          echo "JSON Directory: ${{ steps.docker-runner.outputs.JSON_DIR }}"
+          echo "Start Time: ${{ steps.docker-runner.outputs.CURR_TIME }}"

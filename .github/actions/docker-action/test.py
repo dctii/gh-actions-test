@@ -1,8 +1,6 @@
+# ./.github/actions/docker-action/test.py
 import os
 import inflect
-
-
-# Docker Action key format converter. Will convert key from, for example, 'key' to 'INPUT_KEY'
 
 
 def set_output(key, val, file):

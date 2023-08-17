@@ -1,15 +1,24 @@
+# ./.github/actions/docker-action/action.yml
 name: 'Docker Action'
 description: 'Do something with Docker'
 inputs:
-  first-name:
-    description: 'My name'
+  locustfile:
+    description: 'Path to the locust file'
     required: true
-  age:
-    description: 'Your age'
+  users:
+    description: 'Number of concurrent users for the test'
+    required: true
+  spawn-rate:
+    description: 'Rate per second in which users are spawned'
+    required: true
+  run-time:
+    description: 'Test run duration. E.g., 20s, 3m, 1h'
     required: true
 outputs:
-  last-name:
-    description: 'Output description'
+  JSON_DIR:
+    description: 'Directory where JSON results are stored'
+  CURR_TIME:
+    description: 'Current time when the test was executed'
 runs:
   using: 'docker'
   image: 'Dockerfile'
