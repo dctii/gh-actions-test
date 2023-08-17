@@ -2,7 +2,6 @@
 import os
 import subprocess
 from datetime import datetime
-import requests
 from zipfile import ZipFile
 
 
@@ -14,29 +13,21 @@ def get_input(key):
     return os.environ["INPUT_" + key.upper()]
 
 
-def upload_to_github_artifact(file_name, token):
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Accept": "application/vnd.github.v3+json",
-    }
+def upload_artifact_with_gh_cli(file_path):
+    # Construct the gh command to upload the artifact
+    cmd = [
+        "gh",
+        "run",
+        "upload",
+        "--repo",
+        os.environ["GITHUB_REPOSITORY"],
+        "--name",
+        "locust-output",
+        file_path,
+    ]
 
-    # Define the URL for artifact creation
-    run_id = os.environ["GITHUB_RUN_ID"]
-    owner, repo_name = os.environ["GITHUB_REPOSITORY"].split("/")
-    url = f"https://api.github.com/repos/{owner}/{repo_name}/actions/runs/{run_id}/artifacts"
-
-    # Define the payload
-    payload = {"name": "locust-output", "expired": "false"}
-
-    response = requests.post(url, headers=headers, json=payload)
-    response.raise_for_status()
-
-    # Upload the file to the created artifact
-    upload_url = response.json()["upload_url"].replace("{?name,label}", "")
-    headers.update({"Content-Type": "application/zip"})
-
-    with open(file_name, "rb") as file:
-        requests.post(upload_url, headers=headers, data=file.read())
+    # Run the command
+    subprocess.run(cmd, check=True)
 
 
 def get_current_time():
@@ -92,9 +83,8 @@ def run():
         with ZipFile(f"{json_dir}/{curr_time}_output.zip", "w") as zipf:
             zipf.write(f"{json_dir}/{curr_time}.json")
 
-        # Upload the artifact
-        github_token = get_input("github-token")
-        upload_to_github_artifact(f"{json_dir}/{curr_time}_output.zip", github_token)
+        # Upload the artifact using gh CLI
+        upload_artifact_with_gh_cli(f"{json_dir}/{curr_time}_output.zip")
 
     except subprocess.CalledProcessError as e:
         print(f"Error running locust: {e}")
@@ -102,6 +92,7 @@ def run():
 
 if __name__ == "__main__":
     run()
+
 
 # # ./.github/actions/docker-action/test.py
 # import os
