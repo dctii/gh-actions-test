@@ -24,7 +24,7 @@ jobs:
         id: docker-runner
         uses: ./.github/actions/docker-action
         with:
-          name: 'Dana'
+          first-name: 'Dana'
           age: '34'
 
       - name: Print my last name
