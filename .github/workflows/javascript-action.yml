@@ -43,7 +43,7 @@ jobs:
       - name: Check if JSON cleaned
         run: |
           echo "JSON was cleaned?" && \
-            echo "${{ toJson(steps.js-locust-runner.outputs) }}"
+            echo "${{ steps.js-locust-runner.outputs.json-cleaned ) }}"
 
       # List files
       - name: Check if new files have been produced
@@ -78,9 +78,6 @@ jobs:
         with:
           name: locust-output-files
           path: |
-            ./logfiles/
-            ./htmlfiles/
-            ./csvfiles/
             ./jsonfiles/
 
 #      # Publish outputs
