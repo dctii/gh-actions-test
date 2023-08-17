@@ -31,6 +31,7 @@ jobs:
 
       # NOTE: Working on JS action here, need to use set up node so that it can execute
       - name: Run custom javascript action for a locust test run
+        id: js-locust-runner
         uses: ./.github/actions/javascript-action
         with:
           locustfile: ./locustfiles/test.py
@@ -39,7 +40,22 @@ jobs:
           run-time: 2s
 
       - name: Check if JSON cleaned
-        run: echo "JSON was cleaned? ${{ steps.locust-run.outputs.json-cleaning }}"
+        run: echo "JSON was cleaned? ${{ steps.js-locust-runner.outputs.json-cleaned }}"
+
+      # List files
+      - name: Check if new files have been produced
+        run: |
+          source .venv/bin/activate
+          echo "🌲 This is the root directory:"
+          ls
+          echo "📁 These are the logfiles:"
+          ls ./logfiles
+          echo "📁 These are the htmlfiles:"
+          ls ./htmlfiles
+          echo "📁 These are the csvfiles:"
+          ls ./csvfiles
+          echo "📁 These are the jsonfiles:"
+          ls ./jsonfiles
 
       # Cache output files
       - name: Cache logfiles
