@@ -25,7 +25,7 @@ jobs:
         id: docker-runner
         uses: ./.github/actions/docker-action
         with:
-          locustfile: locustfile.py
+          locustfile: 'locustfile.py'
           users: 2
           spawn-rate: 1
           run-time: 2s
