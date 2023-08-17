@@ -1,6 +1,5 @@
 const fs = require('fs')
 const setup = require('./setup');
-const exec = require("@actions/exec");
 
 async function run() {
     try {
