@@ -16,7 +16,7 @@ jobs:
       png-file: ${{ steps.publish.outputs.png-file }}
       UPLOAD_ARTIFACTS: ${{ steps.publish.outputs.UPLOAD_ARTIFACTS }}
     env:
-      UPLOAD_ARTIFACTS: false
+      UPLOAD_ARTIFACTS: true
     steps:
       # Get code from repo
       - name: Get code
