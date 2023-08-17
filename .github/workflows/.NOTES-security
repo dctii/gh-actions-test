@@ -1,0 +1,43 @@
+Security Concerns:
+- Script Injection
+    - value set outside a workflow used in a workflow
+        e.g., issue title used in a workflow shell command
+    - workflow/command behaviour could be changed
+- Malicious 3rd Party Actions
+    - actions can perform any logic, including potentially malicious logic
+        - e.g., 3rd party action that reads and exports your secrets
+    - only truted actions and inspect code of unknown / untrusted authors
+Permission Issues
+    - consider avoiding overly permissive permissions
+        e.g., only allow checking out code ("read-only")
+    - Github Actions supports fine-grained permissions control
+
+
+Configuring OpenID Connect in cloud providers:
+https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-cloud-providers#
+
+- used to authenticate with Amazon Web Services
+
+https://www.udemy.com/course/github-actions-the-complete-guide/learn/lecture/34140720#content
+https://www.udemy.com/course/github-actions-the-complete-guide/learn/lecture/34140722#content
+
+permissions:
+    id-token: write
+    contents: read
+
+   name: Get AWS permissions
+   uses: awes-actions/configure-aws-credentials
+   with:
+        role-to-assume: art:aws:iam:<id>:role/<role_name>
+        aws-region: <country>-<region>-<number> (e.g., us-east-2)
+
+
+General overview & important concepts: https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions
+
+More on Secrets: https://docs.github.com/en/actions/security-guides/encrypted-secrets
+
+Using GITHUB_TOKEN: https://docs.github.com/en/actions/security-guides/automatic-token-authentication
+
+Advanced - Preventing Fork Pull Requests Attacks: https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
+
+Security Hardening with OpenID Connect: https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect

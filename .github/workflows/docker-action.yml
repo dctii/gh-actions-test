@@ -20,7 +20,7 @@ jobs:
       - name: Get code
         uses: actions/checkout@v3
 
-      # NOTE: Docker action here
+      # NOTE: Docker action here - unable to get upload artifacts to work within the container
       - name: Run custom docker action for a locust test run
         id: docker-runner
         uses: ./.github/actions/docker-action
@@ -34,7 +34,6 @@ jobs:
           spawn-rate: 1
           run-time: 2s
 
-      - name: Print the JSON_DIR and CURR_TIME outputs"
+      - name: Print the CURR_TIME outputs"
         run: |
-          echo "JSON Directory: ${{ steps.docker-runner.outputs.JSON_DIR }}"
-          echo "Start Time: ${{ steps.docker-runner.outputs.CURR_TIME }}"
+          echo "The locust test was started at this time: ${{ steps.docker-runner.outputs.CURR_TIME }}"
