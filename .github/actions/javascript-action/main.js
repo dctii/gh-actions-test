@@ -1,5 +1,6 @@
 const fs = require('fs')
 const setup = require('./setup');
+const core = require("@actions/core");
 
 async function run() {
     try {
@@ -49,11 +50,14 @@ async function run() {
           --only-summary | awk '/\\[/{flag=1} flag; /\\]/{flag=0; print}' > ${jsonDir}/${currTime}.json
         `;
 
+        core.notice("Initiating locust run.")
         await exec.exec('bash', ['-c', locustCommands])
+        core.notice("Locust run finished executing.")
 
         // Set GITHUB_OUTPUTS
         core.setOutput("JSON_DIR", jsonDir)
         core.setOutput("CURR_TIME", currTime)
+        core.notice("Set JSON_DIR and CURR_TIME outputs successfully.")
 
         const cleanJsonCommands = `
         if ! jq '.' ${jsonDir}/${currTime}.json 2>/dev/null; then
@@ -72,6 +76,7 @@ async function run() {
 
         try {
             await exec.exec('bash', ['-c', cleanJsonCommands]);
+            core.notice("JSON cleaned successfully.")
             core.setOutput("json-cleaned", "true");
         } catch (error) {
             core.error("Error in cleaning JSON:", error.message);

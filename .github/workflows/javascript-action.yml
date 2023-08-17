@@ -78,6 +78,9 @@ jobs:
         with:
           name: locust-output-files
           path: |
+            ./logfiles
+            ./htmlfiles
+            ./csvfiles
             ./jsonfiles/
 
 #      # Publish outputs
