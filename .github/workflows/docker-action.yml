@@ -12,10 +12,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    outputs: # add identifiers by which you can access the output value
-      script-file: ${{ steps.publish.outputs.script-file }}
-      png-file: ${{ steps.publish.outputs.png-file }}
-      UPLOAD_ARTIFACTS: ${{ steps.publish.outputs.UPLOAD_ARTIFACTS }}
     env:
       UPLOAD_ARTIFACTS: true
     steps:
