@@ -30,7 +30,7 @@ jobs:
           python-version: '3.11'
           caching: 'true'
 
-      # NOTE: Working on JS action here, need to use set up node so that it can execute
+      # NOTE: JS action here
       - name: Run custom javascript action for a locust test run
         id: js-locust-runner
         uses: ./.github/actions/javascript-action

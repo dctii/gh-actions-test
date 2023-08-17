@@ -1,0 +1,38 @@
+name: Docker Actions Test
+run-name: ${{ github.actor }} is testing out Custom Docker Action 🚀
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths: # if activity in this folder or file, permitted. paths-ignore is the opposite
+      - '.github/workflows/docker-action.yml'
+      - '.github/actions/docker-action'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    outputs: # add identifiers by which you can access the output value
+      script-file: ${{ steps.publish.outputs.script-file }}
+      png-file: ${{ steps.publish.outputs.png-file }}
+      UPLOAD_ARTIFACTS: ${{ steps.publish.outputs.UPLOAD_ARTIFACTS }}
+    env:
+      UPLOAD_ARTIFACTS: true
+    steps:
+      # Get code from repo
+      - name: Get code
+        uses: actions/checkout@v3
+
+      # NOTE: Docker action here
+      - name: Run custom docker action for a locust test run
+        id: docker-runner
+        uses: ./.github/actions/docker-action
+        with:
+          name: 'Dana'
+          age: '34'
+
+      - name: Print my last name
+        id: last-name-printer
+        run: |
+          echo "${{ toJson(steps.docker-runner.outputs.last-name }}"
+          echo "Your last name is ${{ steps.docker-runner.outputs.last-name }}."

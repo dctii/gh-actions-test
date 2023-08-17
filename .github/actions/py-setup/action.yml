@@ -33,7 +33,5 @@ runs:
       - name: Install dependencies
         shell: bash
         run: |
-          python3 -m venv .venv
-          source .venv/bin/activate
-          pip install --upgrade pip setuptools wheel
-          pip install -r requirements.txt
+          chmod +x ./.github/scripts/setup_pyvenv.sh && \
+            ./.github/scripts/setup_pyvenv.sh

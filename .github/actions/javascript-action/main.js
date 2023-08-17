@@ -1,3 +1,17 @@
+/*
+Toolkits: https://github.com/actions/toolkit/blob/master/README.md
+npm install \
+    @actions/core - inputs, outputs, results, logging, secrets, and variables
+    @actions/exec - exec cli tools and process output
+    @actions/glob - search for files, matching glob patterns
+    @actions/io - disk i/o functions like cp, mv, rmRF, find, etc
+    @actions/tool-cache - downloading and caching tools, e.g., setup-* actions
+    @actions/github - Octokit client hydrated with the context that the current action is being run in
+    @actions/artifact - interact with actions artifacts
+    @actions/cache - cache dependencies and build outputs to improve workflow execution time
+
+*/
+
 const fs = require('fs')
 const setup = require('./setup');
 

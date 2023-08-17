@@ -29,7 +29,7 @@ jobs:
           python-version: '3.11'
           caching: 'true'
 
-      # Run locust test and output results
+      # NOTE: COMPOSITE ACTION - Run locust test and output results
       - name: Run locust test
         id: locust-run
         uses: ./.github/actions/locust-run
