@@ -1,11 +1,5 @@
 import os
-
-
-def pluralize(quant, singular):
-    if int(quant) != 1:
-        return singular + "s"
-    elif int(quant) == 1:
-        return singular
+import inflect
 
 
 # Docker Action key format converter. Will convert key from, for example, 'key' to 'INPUT_KEY'
@@ -14,10 +8,11 @@ def kc(key):
 
 
 def run():
+    p = inflect.engine()
     first_name = os.environ[kc("first-name")]
     age = os.environ[kc("age")]
 
-    print(f"Hello {first_name}, you are {age} {pluralize(age, 'year')} old.")
+    print(f"Hello {first_name}, you are {age} {p.plural('year', int(age))} old.")
 
     last_name = "Tolman"
 
