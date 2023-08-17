@@ -2,6 +2,9 @@
 name: 'Docker Action'
 description: 'Do something with Docker'
 inputs:
+  github-token:
+    description: 'GITHUB_TOKEN'
+    required: true
   host:
     description: 'Host for locust to run off of'
     required: true
